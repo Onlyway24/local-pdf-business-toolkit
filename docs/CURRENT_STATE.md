@@ -654,3 +654,186 @@ The test suite now covers:
 - command routing
 - client pack creation
 - ZIP export
+
+---
+
+# Update - Nested Folder Scanning Support
+
+## Added Capability
+
+The project now supports nested folder scanning.
+
+Before, the scanner only processed files directly inside the selected folder.
+
+Now, it recursively scans files inside subfolders too.
+
+## Example Input
+
+tests/fixtures/nested-client-folder/
+  invoices/
+    fattura-febbraio.pdf
+  contracts/
+    contratto-servizio.pdf
+  identity/
+    documento-identita.txt
+
+## Example Output
+
+The client-pack command can now produce:
+
+outputs/client-packs/client-pack-<timestamp>/
+  README.md
+  documents/
+    invoices/
+      fattura-febbraio.pdf
+    contracts/
+      contratto-servizio.pdf
+    identity-documents/
+      documento-identita.txt
+  reports/
+    inspection.md
+    organization-plan.md
+
+## What Changed
+
+The scanner now stores:
+
+- file name
+- relative path
+- extension
+- size
+- document type
+
+The organization plan now stores:
+
+- original file name
+- source relative path
+- clean file name
+- target folder
+- proposed path
+- manual review status
+
+Preview packs and client packs now copy from sourceRelativePath instead of assuming every file is directly inside the root folder.
+
+## New Files
+
+- tests/nestedClientPack.test.js
+- tests/fixtures/nested-client-folder/
+
+## Updated Files
+
+- src/core/scanFolder.js
+- src/core/createOrganizationPlan.js
+- src/output/createPreviewPack.js
+- src/output/createClientPack.js
+- tests/scanFolder.test.js
+- package.json
+
+## Product Value
+
+This makes the tool much more realistic.
+
+Real clients often send folders with documents already split across random subfolders.
+
+The tool can now process those folders and still generate a clean client-ready pack.
+
+## Verification
+
+The test suite verifies:
+
+- normal flat folders still work
+- nested folders are scanned recursively
+- relative paths are preserved
+- client packs can be created from nested source folders
+EOFcat >> docs/CURRENT_STATE.md <<'EOF'
+
+---
+
+# Update - Nested Folder Scanning Support
+
+## Added Capability
+
+The project now supports nested folder scanning.
+
+Before, the scanner only processed files directly inside the selected folder.
+
+Now, it recursively scans files inside subfolders too.
+
+## Example Input
+
+tests/fixtures/nested-client-folder/
+  invoices/
+    fattura-febbraio.pdf
+  contracts/
+    contratto-servizio.pdf
+  identity/
+    documento-identita.txt
+
+## Example Output
+
+The client-pack command can now produce:
+
+outputs/client-packs/client-pack-<timestamp>/
+  README.md
+  documents/
+    invoices/
+      fattura-febbraio.pdf
+    contracts/
+      contratto-servizio.pdf
+    identity-documents/
+      documento-identita.txt
+  reports/
+    inspection.md
+    organization-plan.md
+
+## What Changed
+
+The scanner now stores:
+
+- file name
+- relative path
+- extension
+- size
+- document type
+
+The organization plan now stores:
+
+- original file name
+- source relative path
+- clean file name
+- target folder
+- proposed path
+- manual review status
+
+Preview packs and client packs now copy from sourceRelativePath instead of assuming every file is directly inside the root folder.
+
+## New Files
+
+- tests/nestedClientPack.test.js
+- tests/fixtures/nested-client-folder/
+
+## Updated Files
+
+- src/core/scanFolder.js
+- src/core/createOrganizationPlan.js
+- src/output/createPreviewPack.js
+- src/output/createClientPack.js
+- tests/scanFolder.test.js
+- package.json
+
+## Product Value
+
+This makes the tool much more realistic.
+
+Real clients often send folders with documents already split across random subfolders.
+
+The tool can now process those folders and still generate a clean client-ready pack.
+
+## Verification
+
+The test suite verifies:
+
+- normal flat folders still work
+- nested folders are scanned recursively
+- relative paths are preserved
+- client packs can be created from nested source folders
