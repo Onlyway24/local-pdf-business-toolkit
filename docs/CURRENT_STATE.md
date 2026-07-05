@@ -1083,3 +1083,73 @@ A customer can open the README and immediately understand:
 ## Verification
 
 The test suite verifies README metadata and delivery recommendation behavior.
+
+---
+
+# Update - Full Demo Command
+
+## Added Capability
+
+The project now includes a full demo command.
+
+It creates a client pack and ZIP archive in one flow.
+
+## Commands
+
+Ready demo:
+
+npm run demo:full
+
+Review demo with duplicates:
+
+npm run demo:full:review
+
+## What It Does
+
+The full demo command:
+
+- scans the source folder
+- inspects the folder
+- detects duplicate files
+- creates a client-ready pack
+- creates README.md
+- creates reports
+- creates a ZIP file
+- saves a full-demo report
+
+## Output
+
+The command returns:
+
+- source folder
+- total files
+- status
+- readiness score
+- client pack folder
+- ZIP file path
+- saved report path
+
+## Product Value
+
+This makes the toolkit easy to demonstrate.
+
+Instead of running multiple commands manually, a user can run one command and immediately get a deliverable ZIP.
+
+This is important for showing the project to a client, friend, recruiter, or using it as a portfolio demo.
+
+## New Files
+
+- src/commands/fullDemoCommand.js
+- tests/fullDemoCommand.test.js
+
+## Updated Files
+
+- src/commands/commandRouter.js
+- package.json
+
+## Verification
+
+The test suite verifies that the full demo command creates both:
+
+- a client pack folder
+- a ZIP file
