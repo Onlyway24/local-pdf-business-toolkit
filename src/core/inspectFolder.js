@@ -1,3 +1,5 @@
+const { detectDuplicateFiles } = require("./detectDuplicateFiles");
+
 function inspectFolder(scanResult) {
   const totalFiles = scanResult.totalFiles;
 
@@ -12,13 +14,16 @@ function inspectFolder(scanResult) {
   ).length;
 
   const needsReview = totalFiles - knownDocuments;
+  const duplicates = detectDuplicateFiles(scanResult);
 
   const readinessScore =
     totalFiles === 0 ? 0 : Math.round((knownDocuments / totalFiles) * 100);
 
   let status = "EMPTY";
 
-  if (totalFiles > 0 && readinessScore >= 90) {
+  if (totalFiles > 0 && duplicates.hasDuplicates) {
+    status = "NEEDS REVIEW";
+  } else if (totalFiles > 0 && readinessScore >= 90) {
     status = "READY";
   } else if (totalFiles > 0 && readinessScore >= 60) {
     status = "PARTIAL";
@@ -35,6 +40,7 @@ function inspectFolder(scanResult) {
     needsReview,
     readinessScore,
     status,
+    duplicates,
   };
 }
 
