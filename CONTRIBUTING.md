@@ -19,7 +19,7 @@ Do not push if tests fail.
 
 ## Workflow
 
-Recommended workflow:
+Recommended workflow for small owner-only changes:
 
 1. Pull latest changes:
 
@@ -39,6 +39,28 @@ Recommended workflow:
 5. Push:
 
        git push origin main
+
+## Collaborator Branch Workflow
+
+Collaborators should avoid working directly on main.
+
+Use a separate branch for each feature or fix.
+
+Example:
+
+    git pull origin main
+    git checkout -b feature/html-report
+
+After making changes:
+
+    npm test
+    git add .
+    git commit -m "Add HTML report draft"
+    git push origin feature/html-report
+
+Then open a pull request on GitHub.
+
+The pull request should be reviewed before merging into main.
 
 ## Project Safety
 
