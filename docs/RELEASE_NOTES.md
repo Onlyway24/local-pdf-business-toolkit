@@ -28,6 +28,7 @@ This release provides a local-first workflow for scanning, organizing, inspectin
 - Collaboration guide
 - Issue templates
 - Early local web interface draft
+- Local PDF text extraction command
 
 ## Main Commands
 
@@ -83,14 +84,14 @@ The web interface is an early draft and should remain local-first.
 ## Known Limitations
 
 - Classification is currently filename-based.
-- PDF text extraction is not implemented yet.
+- PDF text extraction is available through a dedicated local inspection command.
 - Categories are not configurable yet.
 - HTML report export is not implemented yet.
 - The web interface is still an early draft.
 
 ## Next Improvements
 
-- Add PDF text extraction
+- Integrate PDF text previews into reports
 - Add configurable categories
 - Add HTML report export
 - Improve the local web interface

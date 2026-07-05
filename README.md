@@ -74,6 +74,14 @@ Inspect a folder:
 
     node src/index.js inspect samples
 
+Inspect a folder with local PDF text extraction:
+
+    node src/index.js inspect-pdf-text samples
+
+Or run the shortcut:
+
+    npm run inspect:pdf-text
+
 Create a client pack:
 
     node src/index.js client-pack samples "Mario Rossi"
