@@ -21,13 +21,22 @@ async function run() {
   );
 
   assert.ok(execution.result.savedPath);
-  assert.ok(fs.existsSync(execution.result.savedPath));
+  assert.ok(execution.result.markdownReportPath);
+  assert.ok(execution.result.htmlReportPath);
 
-  const report = fs.readFileSync(execution.result.savedPath, 'utf8');
+  assert.ok(fs.existsSync(execution.result.markdownReportPath));
+  assert.ok(fs.existsSync(execution.result.htmlReportPath));
 
-  assert.ok(report.includes('# PDF Text Inspection Report'));
-  assert.ok(report.includes('## PDF Text Extraction'));
-  assert.ok(report.includes('## PDF Files'));
+  const markdownReport = fs.readFileSync(execution.result.markdownReportPath, 'utf8');
+  const htmlReport = fs.readFileSync(execution.result.htmlReportPath, 'utf8');
+
+  assert.ok(markdownReport.includes('# PDF Text Inspection Report'));
+  assert.ok(markdownReport.includes('## PDF Text Extraction'));
+  assert.ok(markdownReport.includes('## PDF Files'));
+
+  assert.ok(htmlReport.includes('<!doctype html>'));
+  assert.ok(htmlReport.includes('PDF Text Inspection Report'));
+  assert.ok(htmlReport.includes('PDF Text Extraction'));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');
   assert.strictEqual(pdfFiles.length, 2);
