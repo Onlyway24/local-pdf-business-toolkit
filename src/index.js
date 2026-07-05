@@ -1,5 +1,6 @@
 const { runScanCommand } = require("./commands/scanCommand");
 const { runPlanCommand } = require("./commands/planCommand");
+const { runPreviewCommand } = require("./commands/previewCommand");
 
 function printHelp() {
   console.log("Local PDF Business Toolkit");
@@ -7,12 +8,16 @@ function printHelp() {
   console.log("Usage:");
   console.log("  node src/index.js scan <folder>");
   console.log("  node src/index.js plan <folder>");
+  console.log("  node src/index.js preview <folder>");
   console.log("");
   console.log("Examples:");
   console.log("  npm run scan");
   console.log("  npm run demo");
+  console.log("  npm run demo:plan");
+  console.log("  npm run demo:preview");
   console.log("  node src/index.js scan input");
   console.log("  node src/index.js plan samples");
+  console.log("  node src/index.js preview samples");
 }
 
 function printSuccess(title, result) {
@@ -20,6 +25,12 @@ function printSuccess(title, result) {
   console.log("--- " + title + " ---");
   console.log("Folder: " + result.folderPath);
   console.log("Files found: " + result.totalFiles);
+
+  if (result.previewRoot) {
+    console.log("Preview folder:");
+    console.log(result.previewRoot);
+  }
+
   console.log("Report saved:");
   console.log(result.savedPath);
 }
@@ -43,6 +54,12 @@ function main() {
     if (command === "plan") {
       const result = runPlanCommand(folder);
       printSuccess("PLAN COMPLETE", result);
+      return;
+    }
+
+    if (command === "preview") {
+      const result = runPreviewCommand(folder);
+      printSuccess("PREVIEW COMPLETE", result);
       return;
     }
 
