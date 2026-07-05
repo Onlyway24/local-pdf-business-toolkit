@@ -13,9 +13,12 @@ Current released tag:
 Latest main branch includes:
 
 - public GitHub repository
+- active collaborator with write access
 - contribution guidelines
+- GitHub Actions test workflow
 - working CLI
-- tests passing
+- local tests passing
+- online tests passing
 
 ## Repository
 
@@ -106,10 +109,9 @@ Before changing code:
 ## Next Recommended Improvements
 
 1. Add release notes document.
-2. Add GitHub Actions test workflow.
-3. Add issue templates.
-4. Add branch workflow for collaborators.
-5. Add PDF text extraction.
-6. Add configurable document categories.
-7. Add HTML report export.
-8. Add local web interface.
+2. Add issue templates.
+3. Add branch workflow for collaborators.
+4. Add PDF text extraction.
+5. Add configurable document categories.
+6. Add HTML report export.
+7. Add local web interface.
