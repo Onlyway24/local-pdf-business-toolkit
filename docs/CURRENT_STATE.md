@@ -837,3 +837,70 @@ The test suite verifies:
 - nested folders are scanned recursively
 - relative paths are preserved
 - client packs can be created from nested source folders
+
+---
+
+# Update - Duplicate Detection
+
+## Added Capability
+
+The project now detects duplicate files.
+
+It checks for:
+
+- duplicate file names
+- duplicate file contents
+
+## Inspection Integration
+
+The inspect command now includes duplicate detection.
+
+If duplicates are found, the folder status becomes:
+
+NEEDS REVIEW
+
+Even if the readiness score is 100%.
+
+## Example
+
+A folder containing:
+
+tests/fixtures/duplicate-client-folder/
+  contracts/
+    contratto.pdf
+  backup/
+    contratto.pdf
+
+Produces:
+
+Status: NEEDS REVIEW
+Duplicates detected: yes
+
+## Product Value
+
+This prevents messy or risky client delivery.
+
+A folder can look organized but still contain repeated files.
+
+The tool now warns the user before delivery.
+
+## New Files
+
+- src/core/detectDuplicateFiles.js
+- tests/detectDuplicateFiles.test.js
+- tests/fixtures/duplicate-client-folder/
+
+## Updated Files
+
+- src/core/inspectFolder.js
+- src/core/createInspectionReport.js
+- tests/inspectFolder.test.js
+- package.json
+
+## Verification
+
+The test suite verifies:
+
+- duplicate names are detected
+- duplicate contents are detected
+- inspection status changes to NEEDS REVIEW when duplicates exist
