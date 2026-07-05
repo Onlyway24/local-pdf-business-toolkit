@@ -990,3 +990,41 @@ For real client work, named folders are easier to archive, deliver, search and e
 ## Verification
 
 The test suite verifies safe client name generation and client-pack folder naming.
+
+---
+
+# Update - Client Name In Client Pack README
+
+## Improvement
+
+Client pack README files now include the client name when provided.
+
+Example:
+
+node src/index.js client-pack samples "Mario Rossi"
+
+Generated README includes:
+
+## Client
+Mario Rossi
+
+## Product Value
+
+The client pack is now more professional.
+
+The client name appears both:
+
+- in the generated folder name
+- inside the README.md file
+
+This makes the deliverable easier to understand, archive and send to a real client.
+
+## Updated Files
+
+- src/core/createClientPackReadme.js
+- src/commands/clientPackCommand.js
+- tests/createClientPackReadme.test.js
+
+## Verification
+
+The test suite verifies that client names appear inside generated README content.
