@@ -11,11 +11,13 @@
     "start": "node src/index.js",
     "scan": "node src/index.js scan input",
     "demo": "node src/index.js scan samples",
-    "test": "node tests/classifyDocument.test.js && node tests/scanFolder.test.js && node tests/createCleanFileName.test.js && node tests/createOrganizationPlan.test.js && node tests/createPreviewPack.test.js",
+    "test": "node tests/classifyDocument.test.js && node tests/scanFolder.test.js && node tests/createCleanFileName.test.js && node tests/createOrganizationPlan.test.js && node tests/createPreviewPack.test.js && node tests/inspectFolder.test.js",
     "plan": "node src/index.js plan input",
     "demo:plan": "node src/index.js plan samples",
     "preview": "node src/index.js preview input",
-    "demo:preview": "node src/index.js preview samples"
+    "demo:preview": "node src/index.js preview samples",
+    "inspect": "node src/index.js inspect input",
+    "demo:inspect": "node src/index.js inspect samples"
   },
   "keywords": [],
   "author": "",
