@@ -15,6 +15,7 @@ function printHelp() {
   console.log("  npm run demo:plan");
   console.log("  npm run demo:preview");
   console.log("  npm run demo:inspect");
+  console.log("  npm run demo:client-pack");
 }
 
 function printSuccess(title, result) {
@@ -31,6 +32,11 @@ function printSuccess(title, result) {
   if (result.previewRoot) {
     console.log("Preview folder:");
     console.log(result.previewRoot);
+  }
+
+  if (result.clientPackRoot) {
+    console.log("Client pack folder:");
+    console.log(result.clientPackRoot);
   }
 
   console.log("Report saved:");

@@ -3,6 +3,7 @@ const { runScanCommand } = require("./scanCommand");
 const { runPlanCommand } = require("./planCommand");
 const { runPreviewCommand } = require("./previewCommand");
 const { runInspectCommand } = require("./inspectCommand");
+const { runClientPackCommand } = require("./clientPackCommand");
 
 const COMMANDS = {
   scan: {
@@ -35,6 +36,14 @@ const COMMANDS = {
     usage: "node src/index.js inspect <folder>",
     successTitle: "INSPECTION COMPLETE",
     run: runInspectCommand,
+  },
+
+  "client-pack": {
+    name: "client-pack",
+    description: "Create a client-ready document pack.",
+    usage: "node src/index.js client-pack <folder>",
+    successTitle: "CLIENT PACK COMPLETE",
+    run: runClientPackCommand,
   },
 };
 
