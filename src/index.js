@@ -48,6 +48,11 @@ function printSuccess(title, result) {
     console.log("Report saved:");
     console.log(result.savedPath);
   }
+
+  if (result.htmlReportPath) {
+    console.log("HTML report:");
+    console.log(result.htmlReportPath);
+  }
 }
 
 async function main() {
