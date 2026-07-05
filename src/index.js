@@ -44,8 +44,10 @@ function printSuccess(title, result) {
     console.log(result.zipPath);
   }
 
-  console.log("Report saved:");
-  console.log(result.savedPath);
+  if (result.savedPath) {
+    console.log("Report saved:");
+    console.log(result.savedPath);
+  }
 }
 
 async function main() {
