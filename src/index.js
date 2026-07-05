@@ -1,6 +1,4 @@
-const { scanFolder } = require("./core/scanFolder");
-const { createReport } = require("./core/createReport");
-const { saveReport } = require("./core/saveReport");
+const { runScanCommand } = require("./commands/scanCommand");
 
 function printHelp() {
   console.log("Local PDF Business Toolkit");
@@ -30,24 +28,15 @@ function main() {
     return;
   }
 
-  if (!folder) {
-    console.log("Missing folder path.");
-    printHelp();
-    process.exitCode = 1;
-    return;
-  }
-
   try {
-    const scanResult = scanFolder(folder);
-    const report = createReport(scanResult);
-    const savedPath = saveReport(report);
+    const result = runScanCommand(folder);
 
     console.log("");
     console.log("--- SCAN COMPLETE ---");
-    console.log("Folder: " + scanResult.folderPath);
-    console.log("Files found: " + scanResult.totalFiles);
+    console.log("Folder: " + result.folderPath);
+    console.log("Files found: " + result.totalFiles);
     console.log("Report saved:");
-    console.log(savedPath);
+    console.log(result.savedPath);
   } catch (error) {
     console.log("");
     console.log("--- ERROR ---");

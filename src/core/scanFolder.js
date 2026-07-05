@@ -1,25 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-function scanFolder(folderPath) {
-  const absolutePath = path.resolve(folderPath);
-
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error("Folder not found: " + absolutePath);
-  }
-
-  const stats = fs.statSync(absolutePath);
-
-  if (!stats.isDirectory()) {
-    throw new Error("Path is not a folder: " + absolutePath);
-  }
-
-  const entries = fs.readdirSync(absolutePath, { withFileTypes: true });
+function scanFolder(absoluteFolderPath) {
+  const entries = fs.readdirSync(absoluteFolderPath, { withFileTypes: true });
 
   const files = entries
     .filter((entry) => entry.isFile())
     .map((entry) => {
-      const filePath = path.join(absolutePath, entry.name);
+      const filePath = path.join(absoluteFolderPath, entry.name);
       const fileStats = fs.statSync(filePath);
       const extension = path.extname(entry.name).toLowerCase() || "no-extension";
 
@@ -33,7 +21,7 @@ function scanFolder(folderPath) {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return {
-    folderPath: absolutePath,
+    folderPath: absoluteFolderPath,
     totalFiles: files.length,
     files,
   };
