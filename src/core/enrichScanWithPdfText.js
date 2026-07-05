@@ -1,3 +1,4 @@
+const path = require('path');
 const { extractPdfText } = require('./extractPdfText');
 
 async function enrichScanWithPdfText(scanResult) {
@@ -29,7 +30,8 @@ async function enrichScanWithPdfText(scanResult) {
 
     attempted += 1;
 
-    const extraction = await extractPdfText(file.fullPath);
+    const pdfPath = file.fullPath || path.join(scanResult.folderPath, file.relativePath);
+    const extraction = await extractPdfText(pdfPath);
 
     if (extraction.success) {
       succeeded += 1;
@@ -39,6 +41,7 @@ async function enrichScanWithPdfText(scanResult) {
 
     files.push({
       ...file,
+      fullPath: pdfPath,
       pdfText: {
         success: extraction.success,
         textPreview: extraction.text ? extraction.text.slice(0, 500).trim() : '',
