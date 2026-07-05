@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local PDF Business Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13h2"/><path d="M8 17h2"/><path d="M14 13h2"/><path d="M14 17h2"/></svg>
+      </div>
+      <h1>PDF Business Toolkit</h1>
+      <p>Organizza documenti locali in pochi secondi.</p>
+    </header>
+
+    <main>
+      <section class="card input-section">
+        <h2>Nuova Analisi</h2>
+        <form id="runner-form">
+          <div class="form-group">
+            <label for="folder-path">Percorso Cartella</label>
+            <input type="text" id="folder-path" placeholder="Es. my_custom_demo o samples" required autocomplete="off">
+            <small>Percorso relativo o assoluto alla cartella da organizzare.</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="client-name">Nome Cliente (Opzionale)</label>
+            <input type="text" id="client-name" placeholder="Es. Azienda Test" autocomplete="off">
+            <small>Usato per nominare il pacchetto e il README generato.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="command-select">Azione</label>
+            <select id="command-select">
+              <option value="full-demo">Demo Completa (Full Demo)</option>
+              <option value="inspect">Ispeziona Cartella (Inspect)</option>
+              <option value="plan">Genera Piano (Plan)</option>
+              <option value="client-pack">Crea Pacchetto (Client Pack)</option>
+            </select>
+          </div>
+
+          <button type="submit" id="submit-btn">
+            <span class="btn-text">Avvia Organizzazione</span>
+            <div class="loader hidden"></div>
+          </button>
+        </form>
+      </section>
+
+      <section class="results-section hidden" id="results-section">
+        <div class="card result-card">
+          <div class="result-header">
+            <h2 id="result-title">Risultati</h2>
+            <span class="status-badge" id="result-status">READY</span>
+          </div>
+          
+          <div class="result-stats">
+            <div class="stat-box">
+              <span class="stat-label">File Trovati</span>
+              <span class="stat-value" id="res-files">0</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Readiness</span>
+              <span class="stat-value" id="res-score">100%</span>
+            </div>
+          </div>
+
+          <div class="result-details">
+            <div class="detail-item hidden" id="item-folder">
+              <span class="detail-label">Cartella Input</span>
+              <span class="detail-value" id="res-folder">...</span>
+            </div>
+            <div class="detail-item hidden" id="item-pack">
+              <span class="detail-label">Cartella Pacchetto</span>
+              <span class="detail-value" id="res-pack">...</span>
+            </div>
+            <div class="detail-item hidden" id="item-zip">
+              <span class="detail-label">File ZIP</span>
+              <span class="detail-value" id="res-zip">...</span>
+            </div>
+            <div class="detail-item hidden" id="item-report">
+              <span class="detail-label">Report Generato</span>
+              <span class="detail-value" id="res-report">...</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="error-card hidden" id="error-card">
+          <h3>Si è verificato un errore</h3>
+          <p id="error-message">...</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

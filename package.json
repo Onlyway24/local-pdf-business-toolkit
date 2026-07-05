@@ -1,0 +1,35 @@
+{
+  "name": "003-local-pdf-business-toolkit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "ui": "node src/server.js",
+    "scan": "node src/index.js scan input",
+    "demo": "node src/index.js scan samples",
+    "test": "node tests/classifyDocument.test.js && node tests/scanFolder.test.js && node tests/createCleanFileName.test.js && node tests/createSafeClientName.test.js && node tests/createOrganizationPlan.test.js && node tests/createPreviewPack.test.js && node tests/inspectFolder.test.js && node tests/commandRouter.test.js && node tests/createClientPack.test.js && node tests/createClientPackReadme.test.js && node tests/createZipFromFolder.test.js && node tests/nestedClientPack.test.js && node tests/detectDuplicateFiles.test.js && node tests/fullDemoCommand.test.js",
+    "plan": "node src/index.js plan input",
+    "demo:plan": "node src/index.js plan samples",
+    "preview": "node src/index.js preview input",
+    "demo:preview": "node src/index.js preview samples",
+    "inspect": "node src/index.js inspect input",
+    "demo:inspect": "node src/index.js inspect samples",
+    "client-pack": "node src/index.js client-pack input",
+    "demo:client-pack": "node src/index.js client-pack samples",
+    "zip:latest": "LATEST_PACK=$(ls -td outputs/client-packs/*/ | head -1) && node src/index.js zip-client-pack \"$LATEST_PACK\"",
+    "demo:full": "node src/index.js full-demo samples \"Mario Rossi\"",
+    "demo:full:review": "node src/index.js full-demo tests/fixtures/duplicate-client-folder \"Cliente Duplicati\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
