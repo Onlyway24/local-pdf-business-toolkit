@@ -5,6 +5,7 @@ const { runPreviewCommand } = require("./previewCommand");
 const { runInspectCommand } = require("./inspectCommand");
 const { runClientPackCommand } = require("./clientPackCommand");
 const { runZipClientPackCommand } = require("./zipClientPackCommand");
+const { runFullDemoCommand } = require("./fullDemoCommand");
 
 const COMMANDS = {
   scan: {
@@ -53,6 +54,14 @@ const COMMANDS = {
     usage: "node src/index.js zip-client-pack <client-pack-folder>",
     successTitle: "ZIP CLIENT PACK COMPLETE",
     run: runZipClientPackCommand,
+  },
+
+  "full-demo": {
+    name: "full-demo",
+    description: "Create a client pack and ZIP in one command.",
+    usage: "node src/index.js full-demo <folder> <client-name>",
+    successTitle: "FULL DEMO COMPLETE",
+    run: runFullDemoCommand,
   },
 };
 
