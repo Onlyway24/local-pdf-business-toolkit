@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const { validateFolderPath } = require("../validation/validateFolderPath");
 const { scanFolder } = require("../core/scanFolder");
 const { inspectFolder } = require("../core/inspectFolder");
@@ -18,15 +20,10 @@ function runClientPackCommand(folderPath) {
   const inspectionReport = createInspectionReport(inspection);
   const organizationPlanReport = createPlanReport(organizationPlan);
 
-  const readmeContent = createClientPackReadme({
+  const initialReadmeContent = createClientPackReadme({
     sourceFolderPath: absoluteFolderPath,
     inspection,
-    copiedFiles: organizationPlan.plannedFiles.map((file) => ({
-      originalName: file.originalName,
-      documentType: file.documentType,
-      needsManualReview: file.needsManualReview,
-      relativePackPath: "documents/" + file.proposedPath,
-    })),
+    copiedFiles: [],
   });
 
   const clientPackResult = createClientPack({
@@ -34,8 +31,20 @@ function runClientPackCommand(folderPath) {
     organizationPlan,
     inspectionReport,
     organizationPlanReport,
-    readmeContent,
+    readmeContent: initialReadmeContent,
   });
+
+  const finalReadmeContent = createClientPackReadme({
+    sourceFolderPath: absoluteFolderPath,
+    inspection,
+    copiedFiles: clientPackResult.copiedFiles,
+  });
+
+  fs.writeFileSync(
+    path.join(clientPackResult.clientPackRoot, "README.md"),
+    finalReadmeContent,
+    "utf8"
+  );
 
   const summaryReport = [
     "# LOCAL PDF BUSINESS TOOLKIT - CLIENT PACK",
