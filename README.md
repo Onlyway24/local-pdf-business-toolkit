@@ -1,39 +1,162 @@
 # Local PDF Business Toolkit
 
-A local-first terminal toolkit for organizing, preparing and reporting PDF/document folders.
+Local PDF Business Toolkit is a local-first document organization tool.
 
-## Purpose
+It takes a messy folder of client documents and generates a clean, reviewed, client-ready delivery pack.
 
-This project exists to create practical business value without paid API tokens.
+The toolkit can:
 
-It is designed to run locally on the user's MacBook and help with:
+- scan folders
+- scan nested folders
+- classify documents by filename
+- detect duplicate file names
+- detect duplicate file contents
+- create folder inspections
+- generate organization plans
+- create client-ready packs
+- generate professional README files
+- create ZIP archives
+- run a full demo flow in one command
 
-- organizing client documents
-- preparing PDF folders
-- generating document reports
-- cleaning filenames
-- creating client-ready document packs
+## Why This Exists
 
-## Strategic Role
+Many people and small businesses have messy document folders.
 
-This is not an AI operating system.
+Examples:
 
-This is not MV-AI-OS.
+- freelancers
+- consultants
+- agencies
+- accountants
+- students
+- small offices
+- real estate operators
+- local businesses
 
-This is a practical local tool inside Only-Way Laboratory.
+This tool helps transform messy document folders into organized, reviewable and deliverable client packs.
 
-## Initial Goal
+## Example Use Case
 
-Build a terminal tool that can scan a folder, list files, classify basic document types, and generate a clean local report.
+Input folder:
 
-## Rules
+    client-folder/
+      backup/
+        contratto.pdf
+      contracts/
+        contratto.pdf
+      fattura.pdf
 
-- local-first
-- no paid API requirement
-- no connection to MV-AI-OS
-- no shared runtime
-- no shared dependencies
-- no external API needed
-- outputs saved locally
-- simple enough to demo
-- useful enough to sell as a service
+Generated output:
+
+    outputs/client-packs/cliente-duplicati-<timestamp>/
+      README.md
+      documents/
+        contracts/
+          contratto.pdf
+          contratto-2.pdf
+        invoices/
+          fattura.pdf
+      reports/
+        inspection.md
+        organization-plan.md
+
+Generated ZIP:
+
+    outputs/client-packs/cliente-duplicati-<timestamp>.zip
+
+## Core Commands
+
+Run tests:
+
+    npm test
+
+Inspect a folder:
+
+    node src/index.js inspect samples
+
+Create a client pack:
+
+    node src/index.js client-pack samples "Mario Rossi"
+
+Create a ZIP from the latest client pack:
+
+    npm run zip:latest
+
+Run the full demo:
+
+    npm run demo:full
+
+Run the duplicate warning demo:
+
+    npm run demo:full:review
+
+## Full Demo
+
+The full demo command creates a complete deliverable in one flow:
+
+    npm run demo:full
+
+It creates:
+
+- a client pack folder
+- README.md
+- inspection report
+- organization plan
+- ZIP archive
+- full demo report
+
+## Duplicate Detection
+
+The toolkit detects:
+
+- duplicate file names
+- duplicate file contents
+
+If duplicates are found, the status becomes:
+
+    NEEDS REVIEW
+
+This prevents risky client delivery.
+
+## Delivery Status
+
+Generated client pack README files include:
+
+- generated timestamp
+- client name
+- source folder
+- delivery status
+- readiness score
+- delivery recommendation
+- duplicate warnings when needed
+- included files with actual copied paths
+
+Example ready status:
+
+    Status: READY
+    Readiness score: 100%
+    Delivery recommendation: ready to deliver.
+
+Example review status:
+
+    Status: NEEDS REVIEW
+    Readiness score: 100%
+    Delivery recommendation: review before delivery.
+
+## Project Philosophy
+
+This project is local-first.
+
+It does not modify the original source folder.
+
+Generated outputs are saved under:
+
+    outputs/
+
+The source documents remain untouched.
+
+## Current Status
+
+The project currently supports a working end-to-end flow:
+
+    messy folder -> scan -> inspect -> organize -> client pack -> ZIP
