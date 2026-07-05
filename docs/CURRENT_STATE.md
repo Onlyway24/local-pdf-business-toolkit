@@ -15,6 +15,7 @@ Latest main branch includes:
 - public GitHub repository
 - active collaborator with write access
 - contribution guidelines
+- Italian collaboration guide
 - GitHub Actions test workflow
 - working CLI
 - local tests passing
@@ -110,8 +111,7 @@ Before changing code:
 
 1. Add release notes document.
 2. Add issue templates.
-3. Add branch workflow for collaborators.
-4. Add PDF text extraction.
-5. Add configurable document categories.
-6. Add HTML report export.
-7. Add local web interface.
+3. Add PDF text extraction.
+4. Add configurable document categories.
+5. Add HTML report export.
+6. Add local web interface.
