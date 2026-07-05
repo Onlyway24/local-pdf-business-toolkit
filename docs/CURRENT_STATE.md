@@ -105,7 +105,7 @@ Before changing code:
 ## Known Limitations
 
 - Classification is currently filename-based.
-- PDF text extraction exists as a dedicated local inspection command with saved Markdown reports.
+- PDF text extraction exists as a dedicated local inspection command with saved Markdown and HTML reports.
 - Web interface exists as an early local draft.
 - Human review is still required before sending real client deliverables.
 - Categories are not configurable yet.
@@ -113,6 +113,6 @@ Before changing code:
 ## Next Recommended Improvements
 
 1. Add configurable document categories.
-2. Add HTML report export.
+2. Improve report styling and client-facing summaries.
 3. Improve local web interface.
 4. Improve PDF text extraction with real PDF fixtures.

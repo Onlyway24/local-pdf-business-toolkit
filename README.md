@@ -82,7 +82,7 @@ Or run the shortcut:
 
     npm run inspect:pdf-text
 
-The command saves a Markdown report under outputs/reports/.
+The command saves Markdown and HTML reports under outputs/reports/.
 Unreadable or invalid PDF files are handled safely and reported as extraction failures.
 
 Create a client pack:
