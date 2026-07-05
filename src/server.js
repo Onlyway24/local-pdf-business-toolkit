@@ -14,7 +14,7 @@ app.get('/api/commands', (req, res) => {
   res.json({ commands: getCommands() });
 });
 
-app.post('/api/run', (req, res) => {
+app.post('/api/run', async (req, res) => {
   const { command, folderPath, clientName } = req.body;
 
   if (!command || !folderPath) {
@@ -23,7 +23,7 @@ app.post('/api/run', (req, res) => {
 
   try {
     const extraArgs = clientName ? [clientName] : [];
-    const execution = runCommand(command, folderPath, extraArgs);
+    const execution = await runCommand(command, folderPath, extraArgs);
     
     res.json({
       success: true,

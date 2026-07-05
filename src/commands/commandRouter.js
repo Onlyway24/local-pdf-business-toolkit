@@ -73,14 +73,14 @@ function getCommands() {
   return Object.values(COMMANDS);
 }
 
-function runCommand(commandName, folderPath, extraArgs = []) {
+async function runCommand(commandName, folderPath, extraArgs = []) {
   const command = getCommand(commandName);
 
   if (!command) {
     throw new AppError("Unknown command: " + commandName, "UNKNOWN_COMMAND");
   }
 
-  const result = command.run(folderPath, ...extraArgs);
+  const result = await command.run(folderPath, ...extraArgs);
 
   return {
     title: command.successTitle,
