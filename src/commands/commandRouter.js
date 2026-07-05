@@ -1,0 +1,68 @@
+const { AppError } = require("../errors/AppError");
+const { runScanCommand } = require("./scanCommand");
+const { runPlanCommand } = require("./planCommand");
+const { runPreviewCommand } = require("./previewCommand");
+const { runInspectCommand } = require("./inspectCommand");
+
+const COMMANDS = {
+  scan: {
+    name: "scan",
+    description: "Scan a folder and generate a file report.",
+    usage: "node src/index.js scan <folder>",
+    successTitle: "SCAN COMPLETE",
+    run: runScanCommand,
+  },
+
+  plan: {
+    name: "plan",
+    description: "Create a safe organization plan.",
+    usage: "node src/index.js plan <folder>",
+    successTitle: "PLAN COMPLETE",
+    run: runPlanCommand,
+  },
+
+  preview: {
+    name: "preview",
+    description: "Create a copied preview pack without modifying originals.",
+    usage: "node src/index.js preview <folder>",
+    successTitle: "PREVIEW COMPLETE",
+    run: runPreviewCommand,
+  },
+
+  inspect: {
+    name: "inspect",
+    description: "Inspect folder readiness and business quality.",
+    usage: "node src/index.js inspect <folder>",
+    successTitle: "INSPECTION COMPLETE",
+    run: runInspectCommand,
+  },
+};
+
+function getCommand(commandName) {
+  return COMMANDS[commandName] || null;
+}
+
+function getCommands() {
+  return Object.values(COMMANDS);
+}
+
+function runCommand(commandName, folderPath) {
+  const command = getCommand(commandName);
+
+  if (!command) {
+    throw new AppError("Unknown command: " + commandName, "UNKNOWN_COMMAND");
+  }
+
+  const result = command.run(folderPath);
+
+  return {
+    title: command.successTitle,
+    result,
+  };
+}
+
+module.exports = {
+  getCommand,
+  getCommands,
+  runCommand,
+};

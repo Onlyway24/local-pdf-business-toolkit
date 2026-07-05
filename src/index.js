@@ -1,24 +1,20 @@
-const { runScanCommand } = require("./commands/scanCommand");
-const { runPlanCommand } = require("./commands/planCommand");
-const { runPreviewCommand } = require("./commands/previewCommand");
-const { runInspectCommand } = require("./commands/inspectCommand");
+const { getCommands, runCommand } = require("./commands/commandRouter");
 
 function printHelp() {
   console.log("Local PDF Business Toolkit");
   console.log("");
   console.log("Usage:");
-  console.log("  node src/index.js scan <folder>");
-  console.log("  node src/index.js plan <folder>");
-  console.log("  node src/index.js preview <folder>");
-  console.log("  node src/index.js inspect <folder>");
+
+  for (const command of getCommands()) {
+    console.log("  " + command.usage);
+  }
+
   console.log("");
   console.log("Examples:");
-  console.log("  npm run scan");
   console.log("  npm run demo");
   console.log("  npm run demo:plan");
   console.log("  npm run demo:preview");
   console.log("  npm run demo:inspect");
-  console.log("  node src/index.js inspect samples");
 }
 
 function printSuccess(title, result) {
@@ -42,46 +38,22 @@ function printSuccess(title, result) {
 }
 
 function main() {
-  const command = process.argv[2];
-  const folder = process.argv[3];
+  const commandName = process.argv[2];
+  const folderPath = process.argv[3];
 
-  if (!command) {
+  if (!commandName) {
     printHelp();
     return;
   }
 
   try {
-    if (command === "scan") {
-      const result = runScanCommand(folder);
-      printSuccess("SCAN COMPLETE", result);
-      return;
-    }
-
-    if (command === "plan") {
-      const result = runPlanCommand(folder);
-      printSuccess("PLAN COMPLETE", result);
-      return;
-    }
-
-    if (command === "preview") {
-      const result = runPreviewCommand(folder);
-      printSuccess("PREVIEW COMPLETE", result);
-      return;
-    }
-
-    if (command === "inspect") {
-      const result = runInspectCommand(folder);
-      printSuccess("INSPECTION COMPLETE", result);
-      return;
-    }
-
-    console.log("Unknown command: " + command);
-    printHelp();
-    process.exitCode = 1;
+    const execution = runCommand(commandName, folderPath);
+    printSuccess(execution.title, execution.result);
   } catch (error) {
     console.log("");
     console.log("--- ERROR ---");
     console.log(error.message);
+    printHelp();
     process.exitCode = 1;
   }
 }
