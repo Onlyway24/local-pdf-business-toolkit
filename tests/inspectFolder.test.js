@@ -16,6 +16,15 @@ function run() {
   assert.strictEqual(inspection.needsReview, 0);
   assert.strictEqual(inspection.readinessScore, 100);
   assert.strictEqual(inspection.status, "READY");
+  assert.strictEqual(inspection.duplicates.hasDuplicates, false);
+
+  const duplicatePath = path.resolve("tests/fixtures/duplicate-client-folder");
+  const duplicateScan = scanFolder(duplicatePath);
+  const duplicateInspection = inspectFolder(duplicateScan);
+
+  assert.strictEqual(duplicateInspection.totalFiles, 3);
+  assert.strictEqual(duplicateInspection.status, "NEEDS REVIEW");
+  assert.strictEqual(duplicateInspection.duplicates.hasDuplicates, true);
 
   console.log("inspectFolder.test.js passed");
 }

@@ -18,9 +18,48 @@ function createInspectionReport(inspection) {
   lines.push("Needs review: " + inspection.needsReview);
   lines.push("");
 
+  lines.push("## Duplicate Check");
+
+  if (!inspection.duplicates || !inspection.duplicates.hasDuplicates) {
+    lines.push("No duplicates detected.");
+  } else {
+    lines.push("Duplicates detected: yes");
+    lines.push("");
+
+    if (inspection.duplicates.duplicateNames.length > 0) {
+      lines.push("### Duplicate File Names");
+      for (const duplicate of inspection.duplicates.duplicateNames) {
+        lines.push("");
+        lines.push("- " + duplicate.name);
+        for (const file of duplicate.files) {
+          lines.push("  - " + file);
+        }
+      }
+      lines.push("");
+    }
+
+    if (inspection.duplicates.duplicateContents.length > 0) {
+      lines.push("### Duplicate File Contents");
+      for (const duplicate of inspection.duplicates.duplicateContents) {
+        lines.push("");
+        lines.push("- Matching content:");
+        for (const file of duplicate.files) {
+          lines.push("  - " + file);
+        }
+      }
+      lines.push("");
+    }
+  }
+
   if (inspection.totalFiles === 0) {
     lines.push("## Recommendation");
     lines.push("Add documents before creating a client-ready pack.");
+    return lines.join("\n");
+  }
+
+  if (inspection.duplicates && inspection.duplicates.hasDuplicates) {
+    lines.push("## Recommendation");
+    lines.push("Review duplicate files before delivering this folder to a client.");
     return lines.join("\n");
   }
 
