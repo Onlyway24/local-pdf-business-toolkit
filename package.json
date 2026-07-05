@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node src/index.js",
     "scan": "node src/index.js scan input",
-    "demo": "node src/index.js scan samples"
+    "demo": "node src/index.js scan samples",
+    "test": "node tests/classifyDocument.test.js && node tests/scanFolder.test.js"
   },
   "keywords": [],
   "author": "",
