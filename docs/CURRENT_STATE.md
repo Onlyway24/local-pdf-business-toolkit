@@ -16,6 +16,7 @@ Latest main branch includes:
 - active collaborator with write access
 - contribution guidelines
 - Italian collaboration guide
+- GitHub issue templates
 - GitHub Actions test workflow
 - local web interface draft
 - working CLI
@@ -111,8 +112,7 @@ Before changing code:
 ## Next Recommended Improvements
 
 1. Add release notes document.
-2. Add issue templates.
-3. Add PDF text extraction.
-4. Add configurable document categories.
-5. Add HTML report export.
-6. Improve local web interface.
+2. Add PDF text extraction.
+3. Add configurable document categories.
+4. Add HTML report export.
+5. Improve local web interface.
