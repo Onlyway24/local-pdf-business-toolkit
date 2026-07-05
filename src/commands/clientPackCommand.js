@@ -22,6 +22,7 @@ function runClientPackCommand(folderPath, clientName) {
 
   const initialReadmeContent = createClientPackReadme({
     sourceFolderPath: absoluteFolderPath,
+    clientName,
     inspection,
     copiedFiles: [],
   });
@@ -37,6 +38,7 @@ function runClientPackCommand(folderPath, clientName) {
 
   const finalReadmeContent = createClientPackReadme({
     sourceFolderPath: absoluteFolderPath,
+    clientName,
     inspection,
     copiedFiles: clientPackResult.copiedFiles,
   });

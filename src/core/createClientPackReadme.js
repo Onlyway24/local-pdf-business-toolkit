@@ -1,10 +1,17 @@
-function createClientPackReadme({ sourceFolderPath, inspection, copiedFiles }) {
+function createClientPackReadme({ sourceFolderPath, clientName, inspection, copiedFiles }) {
   const lines = [];
 
   lines.push("# Client Document Pack");
   lines.push("");
   lines.push("This pack was generated locally by Local PDF Business Toolkit.");
   lines.push("");
+
+  if (clientName) {
+    lines.push("## Client");
+    lines.push(clientName);
+    lines.push("");
+  }
+
   lines.push("## Source Folder");
   lines.push(sourceFolderPath);
   lines.push("");

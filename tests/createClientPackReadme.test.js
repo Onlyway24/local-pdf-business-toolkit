@@ -13,6 +13,7 @@ function run() {
 
   const readme = createClientPackReadme({
     sourceFolderPath: duplicatePath,
+    clientName: "Cliente Duplicati",
     inspection,
     copiedFiles: organizationPlan.plannedFiles.map((file) => ({
       originalName: file.originalName,
@@ -22,6 +23,8 @@ function run() {
     })),
   });
 
+  assert.ok(readme.includes("## Client"));
+  assert.ok(readme.includes("Cliente Duplicati"));
   assert.ok(readme.includes("## Warning"));
   assert.ok(readme.includes("Duplicate files were detected"));
   assert.ok(readme.includes("Duplicate File Names"));
