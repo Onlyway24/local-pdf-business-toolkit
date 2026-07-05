@@ -17,6 +17,7 @@ Latest main branch includes:
 - contribution guidelines
 - Italian collaboration guide
 - GitHub issue templates
+- release notes document
 - GitHub Actions test workflow
 - local web interface draft
 - working CLI
@@ -111,8 +112,7 @@ Before changing code:
 
 ## Next Recommended Improvements
 
-1. Add release notes document.
-2. Add PDF text extraction.
-3. Add configurable document categories.
-4. Add HTML report export.
-5. Improve local web interface.
+1. Add PDF text extraction.
+2. Add configurable document categories.
+3. Add HTML report export.
+4. Improve local web interface.
