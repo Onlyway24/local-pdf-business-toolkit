@@ -160,3 +160,48 @@ The source documents remain untouched.
 The project currently supports a working end-to-end flow:
 
     messy folder -> scan -> inspect -> organize -> client pack -> ZIP
+
+## Business Use Cases
+
+This toolkit can support services such as:
+
+- organizing client onboarding documents
+- preparing accountant document packs
+- cleaning folders before delivery
+- checking duplicate contracts or invoices
+- preparing real estate document bundles
+- organizing student or office archives
+- creating reviewable client folders before sending them
+- generating ZIP archives for delivery
+
+## Example Service Offer
+
+A simple service based on this tool could be:
+
+"I organize your messy document folder into a clean client-ready ZIP with reports, duplicate checks and a delivery README."
+
+## What The Client Receives
+
+The client can receive:
+
+- a cleaned document folder
+- organized document categories
+- duplicate warnings if needed
+- inspection report
+- organization report
+- README summary
+- final ZIP archive
+
+## Local-First Advantage
+
+The tool runs locally.
+
+That means source documents do not need to be uploaded to third-party services during processing.
+
+This is useful when working with sensitive files such as:
+
+- contracts
+- invoices
+- identity documents
+- business documents
+- private archives
