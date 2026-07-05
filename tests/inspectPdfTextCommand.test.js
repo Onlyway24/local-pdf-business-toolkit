@@ -1,4 +1,5 @@
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 const { runCommand, getCommand } = require('../src/commands/commandRouter');
 
@@ -18,6 +19,15 @@ async function run() {
     execution.result.pdfTextExtraction.succeeded + execution.result.pdfTextExtraction.failed,
     2
   );
+
+  assert.ok(execution.result.savedPath);
+  assert.ok(fs.existsSync(execution.result.savedPath));
+
+  const report = fs.readFileSync(execution.result.savedPath, 'utf8');
+
+  assert.ok(report.includes('# PDF Text Inspection Report'));
+  assert.ok(report.includes('## PDF Text Extraction'));
+  assert.ok(report.includes('## PDF Files'));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');
   assert.strictEqual(pdfFiles.length, 2);

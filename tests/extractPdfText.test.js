@@ -15,6 +15,13 @@ async function run() {
   assert.strictEqual(missingResult.text, '');
   assert.strictEqual(missingResult.error, 'File does not exist');
 
+  const fakePdfResult = await extractPdfText(path.resolve('samples/cliente-contratto.pdf'));
+
+  assert.strictEqual(fakePdfResult.success, false);
+  assert.strictEqual(fakePdfResult.text, '');
+  assert.strictEqual(fakePdfResult.pageCount, 0);
+  assert.ok(fakePdfResult.error);
+
   console.log('extractPdfText.test.js passed');
 }
 
