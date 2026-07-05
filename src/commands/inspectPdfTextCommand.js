@@ -4,13 +4,18 @@ const { scanFolder } = require('../core/scanFolder');
 const { inspectFolder } = require('../core/inspectFolder');
 const { enrichScanWithPdfText } = require('../core/enrichScanWithPdfText');
 const { createPdfTextInspectionReport } = require('../core/createPdfTextInspectionReport');
+const { createPdfTextInspectionHtmlReport } = require('../core/createPdfTextInspectionHtmlReport');
 
-function createReportPath() {
+function createReportPaths() {
   const reportsRoot = path.resolve('outputs', 'reports');
   fs.mkdirSync(reportsRoot, { recursive: true });
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  return path.join(reportsRoot, `pdf-text-inspection-${timestamp}.md`);
+
+  return {
+    markdownPath: path.join(reportsRoot, `pdf-text-inspection-${timestamp}.md`),
+    htmlPath: path.join(reportsRoot, `pdf-text-inspection-${timestamp}.html`)
+  };
 }
 
 async function runInspectPdfTextCommand(folderPath) {
@@ -24,14 +29,18 @@ async function runInspectPdfTextCommand(folderPath) {
     pdfTextExtraction: enrichedScan.pdfTextExtraction
   };
 
-  const report = createPdfTextInspectionReport(result);
-  const savedPath = createReportPath();
+  const markdownReport = createPdfTextInspectionReport(result);
+  const htmlReport = createPdfTextInspectionHtmlReport(result);
+  const reportPaths = createReportPaths();
 
-  fs.writeFileSync(savedPath, report);
+  fs.writeFileSync(reportPaths.markdownPath, markdownReport);
+  fs.writeFileSync(reportPaths.htmlPath, htmlReport);
 
   return {
     ...result,
-    savedPath
+    savedPath: reportPaths.markdownPath,
+    markdownReportPath: reportPaths.markdownPath,
+    htmlReportPath: reportPaths.htmlPath
   };
 }
 
