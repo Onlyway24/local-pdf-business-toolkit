@@ -904,3 +904,30 @@ The test suite verifies:
 - duplicate names are detected
 - duplicate contents are detected
 - inspection status changes to NEEDS REVIEW when duplicates exist
+
+---
+
+# Update - Duplicate Warning In Client Pack README
+
+## Improvement
+
+Client pack README files now include duplicate warnings when duplicate files are detected.
+
+The README shows:
+
+- duplicate file names
+- duplicate file contents
+- source relative paths involved
+- NEEDS REVIEW status
+
+## Additional Fix
+
+The README now uses actual copied file paths from the generated client pack.
+
+This matters when duplicate file names require unique target names.
+
+## Product Value
+
+The generated client pack can still be created, but it clearly warns the user when delivery needs review.
+
+This avoids silently delivering risky duplicate documents.
