@@ -542,3 +542,48 @@ Current tested features:
 - folder inspection
 - command routing
 - client pack creation
+
+---
+
+# Update - Timestamped Client Packs
+
+## Improvement
+
+Client packs are now timestamped.
+
+Before:
+
+outputs/client-pack/
+
+Now:
+
+outputs/client-packs/client-pack-<timestamp>/
+
+## Why This Matters
+
+The previous implementation reused the same output folder every time.
+
+That was acceptable for demos, but not safe enough for real client work because a new execution could overwrite the previous generated pack.
+
+The new implementation creates a separate client pack folder for every run.
+
+## Example
+
+outputs/client-packs/client-pack-2026-07-05T16-39-12-724Z/
+
+## Safety Improvement
+
+This makes the client-pack command safer for repeated real-world use.
+
+Each generated pack remains preserved unless the user manually deletes it.
+
+## Updated Files
+
+- src/output/createClientPack.js
+- tests/createClientPack.test.js
+
+## Verification
+
+The test suite verifies that generated client packs are stored under:
+
+outputs/client-packs/client-pack-*
