@@ -29,6 +29,7 @@ This release provides a local-first workflow for scanning, organizing, inspectin
 - Issue templates
 - Early local web interface draft
 - Local PDF text extraction command
+- Saved Markdown reports for PDF text inspection
 
 ## Main Commands
 
