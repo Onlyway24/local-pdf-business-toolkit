@@ -10,7 +10,7 @@ const { createClientPackReadme } = require("../core/createClientPackReadme");
 const { createClientPack } = require("../output/createClientPack");
 const { saveReport } = require("../output/saveReport");
 
-function runClientPackCommand(folderPath) {
+function runClientPackCommand(folderPath, clientName) {
   const absoluteFolderPath = validateFolderPath(folderPath);
 
   const scanResult = scanFolder(absoluteFolderPath);
@@ -32,6 +32,7 @@ function runClientPackCommand(folderPath) {
     inspectionReport,
     organizationPlanReport,
     readmeContent: initialReadmeContent,
+    clientName,
   });
 
   const finalReadmeContent = createClientPackReadme({

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { createSafeClientName } = require("../core/createSafeClientName");
 
 function ensureDirectory(directoryPath) {
   if (!fs.existsSync(directoryPath)) {
@@ -39,9 +40,11 @@ function createClientPack({
   inspectionReport,
   organizationPlanReport,
   readmeContent,
+  clientName,
 }) {
   const clientPacksRoot = path.resolve("outputs", "client-packs");
-  const clientPackRoot = path.join(clientPacksRoot, "client-pack-" + createTimestamp());
+  const safeClientName = createSafeClientName(clientName);
+  const clientPackRoot = path.join(clientPacksRoot, safeClientName + "-" + createTimestamp());
   const documentsRoot = path.join(clientPackRoot, "documents");
   const reportsRoot = path.join(clientPackRoot, "reports");
 

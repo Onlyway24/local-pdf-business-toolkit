@@ -51,6 +51,7 @@ function printSuccess(title, result) {
 function main() {
   const commandName = process.argv[2];
   const folderPath = process.argv[3];
+  const extraArgs = process.argv.slice(4);
 
   if (!commandName) {
     printHelp();
@@ -58,7 +59,7 @@ function main() {
   }
 
   try {
-    const execution = runCommand(commandName, folderPath);
+    const execution = runCommand(commandName, folderPath, extraArgs);
     printSuccess(execution.title, execution.result);
   } catch (error) {
     console.log("");

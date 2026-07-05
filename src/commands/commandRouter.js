@@ -64,14 +64,14 @@ function getCommands() {
   return Object.values(COMMANDS);
 }
 
-function runCommand(commandName, folderPath) {
+function runCommand(commandName, folderPath, extraArgs = []) {
   const command = getCommand(commandName);
 
   if (!command) {
     throw new AppError("Unknown command: " + commandName, "UNKNOWN_COMMAND");
   }
 
-  const result = command.run(folderPath);
+  const result = command.run(folderPath, ...extraArgs);
 
   return {
     title: command.successTitle,
