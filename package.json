@@ -20,7 +20,7 @@
     "demo:inspect": "node src/index.js inspect samples",
     "client-pack": "node src/index.js client-pack input",
     "demo:client-pack": "node src/index.js client-pack samples",
-    "zip:latest": "LATEST_PACK=$(find outputs/client-packs -maxdepth 1 -type d -name 'client-pack-*' | sort | tail -1) && test -n \"$LATEST_PACK\" && node src/index.js zip-client-pack \"$LATEST_PACK\""
+    "zip:latest": "LATEST_PACK=$(ls -td outputs/client-packs/*/ | head -1) && node src/index.js zip-client-pack \"$LATEST_PACK\""
   },
   "keywords": [],
   "author": "",
