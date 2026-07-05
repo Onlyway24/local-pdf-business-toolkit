@@ -1028,3 +1028,58 @@ This makes the deliverable easier to understand, archive and send to a real clie
 ## Verification
 
 The test suite verifies that client names appear inside generated README content.
+
+---
+
+# Update - Professional Client Pack README Metadata
+
+## Improvement
+
+Client pack README files now include professional delivery metadata.
+
+The README now includes:
+
+- generated timestamp
+- client name when provided
+- source folder
+- delivery status
+- readiness score
+- delivery recommendation
+- duplicate warnings when needed
+- included files with actual copied paths
+
+## Example
+
+README.md now includes:
+
+## Generated At
+2026-07-05T17:12:23.370Z
+
+## Client
+Mario Rossi
+
+## Delivery Status
+Status: READY
+Readiness score: 100%
+Delivery recommendation: ready to deliver.
+
+## Product Value
+
+The client pack is now closer to a real deliverable.
+
+A customer can open the README and immediately understand:
+
+- who the pack is for
+- when it was generated
+- whether it is ready to deliver
+- whether review is needed
+- what files are included
+
+## Updated Files
+
+- src/core/createClientPackReadme.js
+- tests/createClientPackReadme.test.js
+
+## Verification
+
+The test suite verifies README metadata and delivery recommendation behavior.
