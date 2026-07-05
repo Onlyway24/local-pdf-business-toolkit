@@ -587,3 +587,70 @@ Each generated pack remains preserved unless the user manually deletes it.
 The test suite verifies that generated client packs are stored under:
 
 outputs/client-packs/client-pack-*
+
+---
+
+# Update - ZIP Export For Client Packs
+
+## Added Capability
+
+The project now includes a ZIP export command:
+
+node src/index.js zip-client-pack <client-pack-folder>
+
+Available npm command:
+
+npm run zip:latest
+
+## What The ZIP Export Does
+
+The ZIP export command:
+
+1. validates that the selected client pack folder exists
+2. validates that the selected path is a folder
+3. creates a .zip archive next to the client pack folder
+4. saves a ZIP export report inside outputs/
+
+## Example
+
+Input folder:
+
+outputs/client-packs/client-pack-2026-07-05T16-44-33-500Z/
+
+Generated ZIP:
+
+outputs/client-packs/client-pack-2026-07-05T16-44-33-500Z.zip
+
+## Product Value
+
+This makes the client pack easier to deliver.
+
+Instead of sending a folder manually, the user can now send one ZIP file to a client.
+
+This moves the tool closer to a real paid workflow.
+
+## New Files
+
+- src/commands/zipClientPackCommand.js
+- src/output/createZipFromFolder.js
+- tests/createZipFromFolder.test.js
+
+## Updated Files
+
+- src/commands/commandRouter.js
+- src/index.js
+- package.json
+
+## Current Tested Features
+
+The test suite now covers:
+
+- document classification
+- folder scanning
+- filename cleaning
+- organization planning
+- preview pack creation
+- folder inspection
+- command routing
+- client pack creation
+- ZIP export
