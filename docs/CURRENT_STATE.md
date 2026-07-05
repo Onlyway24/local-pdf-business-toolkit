@@ -384,3 +384,70 @@ It can now:
 - create safe copied preview packs
 
 This is the first operational feature that can be demonstrated as a real local document organization service.
+
+---
+
+# Update - Folder Inspection Command
+
+## Added Capability
+
+The project now includes a folder inspection command:
+
+node src/index.js inspect <folder>
+
+Available npm commands:
+
+npm run inspect
+npm run demo:inspect
+
+## What The Inspect Command Does
+
+The inspect command:
+
+1. validates the selected folder
+2. scans the folder
+3. classifies documents
+4. counts PDF and non-PDF files
+5. counts known and unknown documents
+6. calculates a readiness score
+7. assigns a business status
+8. saves a folder inspection report in outputs/
+
+## Current Inspection Statuses
+
+Possible statuses:
+
+- EMPTY
+- READY
+- PARTIAL
+- NEEDS REVIEW
+
+## Example Result
+
+For the sample folder:
+
+Status: READY
+Readiness score: 100%
+Total files: 3
+PDF files: 2
+Non-PDF files: 1
+Known documents: 3
+Needs review: 0
+
+## New Files
+
+- src/commands/inspectCommand.js
+- src/core/inspectFolder.js
+- src/core/createInspectionReport.js
+- tests/inspectFolder.test.js
+
+## Updated Files
+
+- src/index.js
+- package.json
+
+## Product Value
+
+The tool can now diagnose whether a document folder is ready to be organized or delivered.
+
+This moves the project from simple file processing toward business-ready document operations.
