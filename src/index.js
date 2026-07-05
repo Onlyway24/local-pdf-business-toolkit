@@ -44,11 +44,13 @@ function printSuccess(title, result) {
     console.log(result.zipPath);
   }
 
-  console.log("Report saved:");
-  console.log(result.savedPath);
+  if (result.savedPath) {
+    console.log("Report saved:");
+    console.log(result.savedPath);
+  }
 }
 
-function main() {
+async function main() {
   const commandName = process.argv[2];
   const folderPath = process.argv[3];
   const extraArgs = process.argv.slice(4);
@@ -59,7 +61,7 @@ function main() {
   }
 
   try {
-    const execution = runCommand(commandName, folderPath, extraArgs);
+    const execution = await runCommand(commandName, folderPath, extraArgs);
     printSuccess(execution.title, execution.result);
   } catch (error) {
     console.log("");
@@ -70,4 +72,9 @@ function main() {
   }
 }
 
-main();
+main().catch((error) => {
+  console.log("");
+  console.log("--- ERROR ---");
+  console.log(error.message);
+  process.exitCode = 1;
+});
