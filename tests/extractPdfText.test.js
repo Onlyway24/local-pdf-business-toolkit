@@ -22,6 +22,12 @@ async function run() {
   assert.strictEqual(fakePdfResult.pageCount, 0);
   assert.ok(fakePdfResult.error);
 
+  const realPdfResult = await extractPdfText(path.resolve('tests/fixtures/real-text.pdf'));
+
+  assert.strictEqual(realPdfResult.success, true);
+  assert.ok(realPdfResult.text.includes('Real PDF extraction fixture'));
+  assert.ok(realPdfResult.pageCount >= 1);
+
   console.log('extractPdfText.test.js passed');
 }
 
