@@ -297,3 +297,90 @@ Before committing any feature, run:
 npm test
 
 A feature is not complete if tests fail.
+
+---
+
+# Update - Preview Pack Command
+
+## Added Capability
+
+The project now includes a preview pack command:
+
+node src/index.js preview <folder>
+
+Available npm commands:
+
+npm run preview
+npm run demo:preview
+
+## What The Preview Command Does
+
+The preview command:
+
+1. validates the selected folder
+2. scans the folder
+3. classifies each document
+4. creates an organization plan
+5. creates a copied preview pack inside outputs/preview-pack/
+6. organizes copied files into target folders
+7. saves a preview report inside outputs/
+
+Example output structure:
+
+outputs/preview-pack/
+  contracts/
+    cliente-contratto.pdf
+
+  invoices/
+    fattura-gennaio.pdf
+
+  identity-documents/
+    documento-identita.txt
+
+## Safety Rule
+
+The preview command does not modify original files.
+
+It only copies files into outputs/preview-pack/.
+
+This makes it safe to run before any real rename, move, or destructive operation.
+
+## New Files
+
+- src/commands/previewCommand.js
+- src/core/createPreviewPackReport.js
+- src/output/createPreviewPack.js
+- tests/createPreviewPack.test.js
+
+## Updated Files
+
+- src/index.js
+- package.json
+
+## Tests
+
+The test suite now includes:
+
+- classifyDocument.test.js
+- scanFolder.test.js
+- createCleanFileName.test.js
+- createOrganizationPlan.test.js
+- createPreviewPack.test.js
+
+Current required verification:
+
+npm test
+
+## Current Product Level
+
+The project is no longer just a scanner.
+
+It can now:
+
+- scan folders
+- classify documents
+- generate reports
+- propose organization plans
+- create safe copied preview packs
+
+This is the first operational feature that can be demonstrated as a real local document organization service.
