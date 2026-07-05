@@ -451,3 +451,94 @@ Needs review: 0
 The tool can now diagnose whether a document folder is ready to be organized or delivered.
 
 This moves the project from simple file processing toward business-ready document operations.
+
+---
+
+# Update - Client Pack Command
+
+## Added Capability
+
+The project now includes a client pack command:
+
+node src/index.js client-pack <folder>
+
+Available npm commands:
+
+npm run client-pack
+npm run demo:client-pack
+
+## What The Client Pack Command Does
+
+The client-pack command:
+
+1. validates the selected folder
+2. scans the folder
+3. classifies all documents
+4. inspects folder readiness
+5. creates an organization plan
+6. creates a client-ready folder inside outputs/client-pack/
+7. copies organized documents into typed folders
+8. generates a README.md for the pack
+9. generates inspection and organization reports
+10. saves a summary report inside outputs/
+
+## Output Structure
+
+Example output:
+
+outputs/client-pack/
+  README.md
+  documents/
+    contracts/
+      cliente-contratto.pdf
+    invoices/
+      fattura-gennaio.pdf
+    identity-documents/
+      documento-identita.txt
+  reports/
+    inspection.md
+    organization-plan.md
+
+## Safety Rule
+
+The client-pack command does not modify original files.
+
+It only creates a copied deliverable pack inside outputs/client-pack/.
+
+## New Files
+
+- src/commands/clientPackCommand.js
+- src/core/createClientPackReadme.js
+- src/output/createClientPack.js
+- tests/createClientPack.test.js
+
+## Updated Files
+
+- src/commands/commandRouter.js
+- src/index.js
+- package.json
+
+## Product Value
+
+This is the first clearly sellable feature of the project.
+
+The tool can now take a document folder and generate a clean, organized, client-ready pack with documentation and reports.
+
+This can be presented as a local document organization service for freelancers, consultants, small offices, accountants, agencies, or anyone who handles messy client folders.
+
+## Current Quality Status
+
+Current required verification:
+
+npm test
+
+Current tested features:
+
+- document classification
+- folder scanning
+- filename cleaning
+- organization planning
+- preview pack creation
+- folder inspection
+- command routing
+- client pack creation
