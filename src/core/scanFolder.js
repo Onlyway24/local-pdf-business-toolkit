@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { classifyDocument } = require("./classifyDocument");
 
 function scanFolder(absoluteFolderPath) {
   const entries = fs.readdirSync(absoluteFolderPath, { withFileTypes: true });
@@ -14,6 +15,7 @@ function scanFolder(absoluteFolderPath) {
       return {
         name: entry.name,
         extension,
+        documentType: classifyDocument(entry.name),
         sizeBytes: fileStats.size,
         modifiedAt: fileStats.mtime.toISOString(),
       };

@@ -4,6 +4,13 @@ function formatBytes(bytes) {
   return (bytes / (1024 * 1024)).toFixed(2) + " MB";
 }
 
+function countByDocumentType(files) {
+  return files.reduce((counts, file) => {
+    counts[file.documentType] = (counts[file.documentType] || 0) + 1;
+    return counts;
+  }, {});
+}
+
 function createReport(scanResult) {
   const lines = [];
 
@@ -21,11 +28,21 @@ function createReport(scanResult) {
     return lines.join("\n");
   }
 
+  lines.push("## Document Types");
+
+  const documentTypeCounts = countByDocumentType(scanResult.files);
+
+  for (const [type, count] of Object.entries(documentTypeCounts)) {
+    lines.push("- " + type + ": " + count);
+  }
+
+  lines.push("");
   lines.push("## Files");
 
   for (const file of scanResult.files) {
     lines.push("");
     lines.push("- Name: " + file.name);
+    lines.push("  Type: " + file.documentType);
     lines.push("  Extension: " + file.extension);
     lines.push("  Size: " + formatBytes(file.sizeBytes));
     lines.push("  Modified: " + file.modifiedAt);
