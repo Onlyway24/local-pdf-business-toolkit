@@ -4,6 +4,7 @@ const { runPlanCommand } = require("./planCommand");
 const { runPreviewCommand } = require("./previewCommand");
 const { runInspectCommand } = require("./inspectCommand");
 const { runClientPackCommand } = require("./clientPackCommand");
+const { runZipClientPackCommand } = require("./zipClientPackCommand");
 
 const COMMANDS = {
   scan: {
@@ -44,6 +45,14 @@ const COMMANDS = {
     usage: "node src/index.js client-pack <folder>",
     successTitle: "CLIENT PACK COMPLETE",
     run: runClientPackCommand,
+  },
+
+  "zip-client-pack": {
+    name: "zip-client-pack",
+    description: "Create a ZIP archive from a client pack folder.",
+    usage: "node src/index.js zip-client-pack <client-pack-folder>",
+    successTitle: "ZIP CLIENT PACK COMPLETE",
+    run: runZipClientPackCommand,
   },
 };
 

@@ -39,6 +39,11 @@ function printSuccess(title, result) {
     console.log(result.clientPackRoot);
   }
 
+  if (result.zipPath) {
+    console.log("ZIP file:");
+    console.log(result.zipPath);
+  }
+
   console.log("Report saved:");
   console.log(result.savedPath);
 }

@@ -11,7 +11,7 @@
     "start": "node src/index.js",
     "scan": "node src/index.js scan input",
     "demo": "node src/index.js scan samples",
-    "test": "node tests/classifyDocument.test.js && node tests/scanFolder.test.js && node tests/createCleanFileName.test.js && node tests/createOrganizationPlan.test.js && node tests/createPreviewPack.test.js && node tests/inspectFolder.test.js && node tests/commandRouter.test.js && node tests/createClientPack.test.js",
+    "test": "node tests/classifyDocument.test.js && node tests/scanFolder.test.js && node tests/createCleanFileName.test.js && node tests/createOrganizationPlan.test.js && node tests/createPreviewPack.test.js && node tests/inspectFolder.test.js && node tests/commandRouter.test.js && node tests/createClientPack.test.js && node tests/createZipFromFolder.test.js",
     "plan": "node src/index.js plan input",
     "demo:plan": "node src/index.js plan samples",
     "preview": "node src/index.js preview input",
@@ -19,7 +19,8 @@
     "inspect": "node src/index.js inspect input",
     "demo:inspect": "node src/index.js inspect samples",
     "client-pack": "node src/index.js client-pack input",
-    "demo:client-pack": "node src/index.js client-pack samples"
+    "demo:client-pack": "node src/index.js client-pack samples",
+    "zip:latest": "LATEST_PACK=$(ls -dt outputs/client-packs/client-pack-* | head -1) && node src/index.js zip-client-pack \"$LATEST_PACK\""
   },
   "keywords": [],
   "author": "",
