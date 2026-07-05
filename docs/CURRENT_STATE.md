@@ -213,3 +213,87 @@ The plan should suggest:
 
 This keeps the project safe and professional.
 
+
+---
+
+# Update - Safe Organization Plan Command
+
+## Added Capability
+
+The project now includes a safe planning command:
+
+node src/index.js plan <folder>
+
+Available npm command:
+
+npm run demo:plan
+
+## What The Plan Command Does
+
+The plan command:
+
+1. validates the selected folder
+2. scans the folder
+3. classifies each document
+4. generates a clean proposed filename
+5. suggests a target folder
+6. creates a proposed path
+7. marks whether the file is already clean
+8. marks whether manual review is needed
+9. saves an organization plan report in outputs/
+
+## Safety Rule
+
+The plan command does not rename, move, copy, delete, or modify original files.
+
+It only produces a proposed organization report.
+
+This makes it safe to run on real client folders.
+
+## New Core Files
+
+- src/core/createCleanFileName.js
+- src/core/getTargetFolder.js
+- src/core/createOrganizationPlan.js
+- src/core/createPlanReport.js
+
+## New Command File
+
+- src/commands/planCommand.js
+
+## Updated Files
+
+- src/index.js
+- src/output/saveReport.js
+- package.json
+
+## New Tests
+
+- tests/createCleanFileName.test.js
+- tests/createOrganizationPlan.test.js
+
+## Important Bug Fixed
+
+A filename cleaning bug was found by tests.
+
+Problem:
+
+Contratto Cliente Finale.PDF became:
+
+contratto-cliente-finale-pdf.pdf
+
+Cause:
+
+Uppercase extension handling was incorrect.
+
+Fix:
+
+The original extension is now used to remove the extension from the basename, while the final extension is normalized to lowercase.
+
+## Quality Rule Added
+
+Before committing any feature, run:
+
+npm test
+
+A feature is not complete if tests fail.
