@@ -23,8 +23,11 @@ function run() {
     })),
   });
 
+  assert.ok(readme.includes("## Generated At"));
   assert.ok(readme.includes("## Client"));
   assert.ok(readme.includes("Cliente Duplicati"));
+  assert.ok(readme.includes("## Delivery Status"));
+  assert.ok(readme.includes("Delivery recommendation: review before delivery."));
   assert.ok(readme.includes("## Warning"));
   assert.ok(readme.includes("Duplicate files were detected"));
   assert.ok(readme.includes("Duplicate File Names"));

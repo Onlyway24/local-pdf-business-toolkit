@@ -5,6 +5,9 @@ function createClientPackReadme({ sourceFolderPath, clientName, inspection, copi
   lines.push("");
   lines.push("This pack was generated locally by Local PDF Business Toolkit.");
   lines.push("");
+  lines.push("## Generated At");
+  lines.push(new Date().toISOString());
+  lines.push("");
 
   if (clientName) {
     lines.push("## Client");
@@ -15,9 +18,16 @@ function createClientPackReadme({ sourceFolderPath, clientName, inspection, copi
   lines.push("## Source Folder");
   lines.push(sourceFolderPath);
   lines.push("");
-  lines.push("## Status");
+  lines.push("## Delivery Status");
   lines.push("Status: " + inspection.status);
   lines.push("Readiness score: " + inspection.readinessScore + "%");
+
+  if (inspection.status === "READY") {
+    lines.push("Delivery recommendation: ready to deliver.");
+  } else {
+    lines.push("Delivery recommendation: review before delivery.");
+  }
+
   lines.push("");
 
   if (inspection.duplicates && inspection.duplicates.hasDuplicates) {
