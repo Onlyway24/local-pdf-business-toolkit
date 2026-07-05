@@ -931,3 +931,62 @@ This matters when duplicate file names require unique target names.
 The generated client pack can still be created, but it clearly warns the user when delivery needs review.
 
 This avoids silently delivering risky duplicate documents.
+
+---
+
+# Update - Client Name Option For Client Packs
+
+## Added Capability
+
+The client-pack command now accepts an optional client name:
+
+node src/index.js client-pack <folder> "<client name>"
+
+Example:
+
+node src/index.js client-pack samples "Mario Rossi"
+
+## Output Example
+
+Instead of generating only:
+
+outputs/client-packs/client-<timestamp>/
+
+The tool can now generate:
+
+outputs/client-packs/mario-rossi-<timestamp>/
+
+## Safety
+
+Client names are converted into safe folder names.
+
+Examples:
+
+- Mario Rossi -> mario-rossi
+- Azienda S.r.l. -> azienda-s-r-l
+- Cliente Èlite 24 -> cliente-elite-24
+- empty value -> client
+
+## Product Value
+
+This makes generated packs more professional and easier to identify.
+
+For real client work, named folders are easier to archive, deliver, search and explain.
+
+## New Files
+
+- src/core/createSafeClientName.js
+- tests/createSafeClientName.test.js
+
+## Updated Files
+
+- src/output/createClientPack.js
+- src/commands/clientPackCommand.js
+- src/commands/commandRouter.js
+- src/index.js
+- tests/createClientPack.test.js
+- package.json
+
+## Verification
+
+The test suite verifies safe client name generation and client-pack folder naming.
