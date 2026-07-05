@@ -40,6 +40,7 @@ function run() {
 
   assert.strictEqual(result.totalCopied, 3);
   assert.ok(fs.existsSync(result.clientPackRoot));
+  assert.ok(result.clientPackRoot.includes(path.join("outputs", "client-packs", "client-pack-")));
 
   assert.ok(fs.existsSync(path.join(result.clientPackRoot, "README.md")));
   assert.ok(fs.existsSync(path.join(result.clientPackRoot, "reports", "inspection.md")));

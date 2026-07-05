@@ -7,6 +7,10 @@ function ensureDirectory(directoryPath) {
   }
 }
 
+function createTimestamp() {
+  return new Date().toISOString().replace(/[:.]/g, "-");
+}
+
 function createUniqueFilePath(targetPath) {
   if (!fs.existsSync(targetPath)) {
     return targetPath;
@@ -36,13 +40,10 @@ function createClientPack({
   organizationPlanReport,
   readmeContent,
 }) {
-  const clientPackRoot = path.resolve("outputs", "client-pack");
+  const clientPacksRoot = path.resolve("outputs", "client-packs");
+  const clientPackRoot = path.join(clientPacksRoot, "client-pack-" + createTimestamp());
   const documentsRoot = path.join(clientPackRoot, "documents");
   const reportsRoot = path.join(clientPackRoot, "reports");
-
-  if (fs.existsSync(clientPackRoot)) {
-    fs.rmSync(clientPackRoot, { recursive: true, force: true });
-  }
 
   ensureDirectory(documentsRoot);
   ensureDirectory(reportsRoot);
