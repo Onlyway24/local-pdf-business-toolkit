@@ -4,18 +4,20 @@ const path = require("path");
 const { createZipFromFolder } = require("../src/output/createZipFromFolder");
 
 function run() {
-  const latestPack = fs
-    .readdirSync(path.resolve("outputs/client-packs"))
-    .filter((name) => name.startsWith("client-pack-") && !name.endsWith(".zip"))
-    .sort()
-    .pop();
+  const testRoot = path.resolve("outputs", "test-zip-source");
+  const nestedFolder = path.join(testRoot, "documents");
 
-  assert.ok(latestPack, "Expected at least one client pack folder.");
+  if (fs.existsSync(testRoot)) {
+    fs.rmSync(testRoot, { recursive: true, force: true });
+  }
 
-  const packPath = path.resolve("outputs/client-packs", latestPack);
-  const result = createZipFromFolder(packPath);
+  fs.mkdirSync(nestedFolder, { recursive: true });
+  fs.writeFileSync(path.join(testRoot, "README.md"), "Test ZIP README", "utf8");
+  fs.writeFileSync(path.join(nestedFolder, "sample.txt"), "Sample document", "utf8");
 
-  assert.strictEqual(result.sourceFolder, packPath);
+  const result = createZipFromFolder(testRoot);
+
+  assert.strictEqual(result.sourceFolder, testRoot);
   assert.ok(result.zipPath.endsWith(".zip"));
   assert.ok(fs.existsSync(result.zipPath));
 
