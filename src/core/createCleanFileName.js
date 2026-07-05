@@ -1,8 +1,9 @@
 const path = require("path");
 
 function createCleanFileName(fileName) {
-  const extension = path.extname(fileName).toLowerCase();
-  const baseName = path.basename(fileName, extension);
+  const originalExtension = path.extname(fileName);
+  const normalizedExtension = originalExtension.toLowerCase();
+  const baseName = path.basename(fileName, originalExtension);
 
   const cleanedBaseName = baseName
     .toLowerCase()
@@ -12,10 +13,10 @@ function createCleanFileName(fileName) {
     .replace(/^-+|-+$/g, "");
 
   if (!cleanedBaseName) {
-    return "unnamed-file" + extension;
+    return "unnamed-file" + normalizedExtension;
   }
 
-  return cleanedBaseName + extension;
+  return cleanedBaseName + normalizedExtension;
 }
 
 module.exports = { createCleanFileName };
