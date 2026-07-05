@@ -51,7 +51,8 @@ function createClientPack({
   const copiedFiles = [];
 
   for (const file of organizationPlan.plannedFiles) {
-    const sourcePath = path.join(sourceFolderPath, file.originalName);
+    const sourceRelativePath = file.sourceRelativePath || file.originalName;
+    const sourcePath = path.join(sourceFolderPath, sourceRelativePath);
     const targetFolderPath = path.join(documentsRoot, file.targetFolder);
     const preferredTargetPath = path.join(targetFolderPath, file.cleanFileName);
 
@@ -62,6 +63,7 @@ function createClientPack({
 
     copiedFiles.push({
       originalName: file.originalName,
+      sourceRelativePath,
       documentType: file.documentType,
       needsManualReview: file.needsManualReview,
       copiedTo: targetPath,

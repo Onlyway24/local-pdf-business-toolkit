@@ -1,3 +1,4 @@
+const path = require("path");
 const { createCleanFileName } = require("./createCleanFileName");
 const { getTargetFolder } = require("./getTargetFolder");
 
@@ -5,17 +6,16 @@ function createOrganizationPlan(scanResult) {
   const plannedFiles = scanResult.files.map((file) => {
     const cleanFileName = createCleanFileName(file.name);
     const targetFolder = getTargetFolder(file.documentType);
-    const needsManualReview = file.documentType === "Unknown";
+    const proposedPath = path.join(targetFolder, cleanFileName);
 
     return {
       originalName: file.name,
-      cleanFileName,
+      sourceRelativePath: file.relativePath || file.name,
       documentType: file.documentType,
-      currentExtension: file.extension,
+      cleanFileName,
       targetFolder,
-      proposedPath: targetFolder + "/" + cleanFileName,
-      alreadyClean: file.name === cleanFileName,
-      needsManualReview,
+      proposedPath,
+      needsManualReview: file.documentType === "Unknown",
     };
   });
 

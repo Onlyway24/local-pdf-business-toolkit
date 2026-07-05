@@ -4,20 +4,23 @@ const { scanFolder } = require("../src/core/scanFolder");
 
 function run() {
   const samplePath = path.resolve("samples");
-  const result = scanFolder(samplePath);
+  const sampleResult = scanFolder(samplePath);
 
-  assert.strictEqual(result.folderPath, samplePath);
-  assert.strictEqual(result.totalFiles, 3);
-  assert.strictEqual(result.files.length, 3);
+  assert.strictEqual(sampleResult.folderPath, samplePath);
+  assert.strictEqual(sampleResult.totalFiles, 3);
+  assert.strictEqual(sampleResult.files.length, 3);
 
-  const names = result.files.map((file) => file.name);
+  const nestedPath = path.resolve("tests/fixtures/nested-client-folder");
+  const nestedResult = scanFolder(nestedPath);
 
-  assert.ok(names.includes("cliente-contratto.pdf"));
-  assert.ok(names.includes("fattura-gennaio.pdf"));
-  assert.ok(names.includes("documento-identita.txt"));
+  assert.strictEqual(nestedResult.folderPath, nestedPath);
+  assert.strictEqual(nestedResult.totalFiles, 3);
 
-  const contract = result.files.find((file) => file.name === "cliente-contratto.pdf");
-  assert.strictEqual(contract.documentType, "Contract");
+  const relativePaths = nestedResult.files.map((file) => file.relativePath);
+
+  assert.ok(relativePaths.includes("contracts/contratto-servizio.pdf"));
+  assert.ok(relativePaths.includes("identity/documento-identita.txt"));
+  assert.ok(relativePaths.includes("invoices/fattura-febbraio.pdf"));
 
   console.log("scanFolder.test.js passed");
 }

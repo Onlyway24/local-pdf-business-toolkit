@@ -19,18 +19,19 @@ function createPreviewPack(sourceFolderPath, organizationPlan) {
   const copiedFiles = [];
 
   for (const file of organizationPlan.plannedFiles) {
-    const sourcePath = path.join(sourceFolderPath, file.originalName);
+    const sourceRelativePath = file.sourceRelativePath || file.originalName;
+    const sourcePath = path.join(sourceFolderPath, sourceRelativePath);
     const targetFolderPath = path.join(previewRoot, file.targetFolder);
     const targetPath = path.join(targetFolderPath, file.cleanFileName);
 
     ensureDirectory(targetFolderPath);
-
     fs.copyFileSync(sourcePath, targetPath);
 
     copiedFiles.push({
       originalName: file.originalName,
-      copiedTo: targetPath,
+      sourceRelativePath,
       documentType: file.documentType,
+      copiedTo: targetPath,
       needsManualReview: file.needsManualReview,
     });
   }
