@@ -13,11 +13,21 @@ function createPdfTextInspectionReport(result) {
   lines.push(`Readiness score: ${result.readinessScore}%`);
   lines.push('');
 
+  const attempted = result.pdfTextExtraction?.attempted || 0;
+  const succeeded = result.pdfTextExtraction?.succeeded || 0;
+  const failed = result.pdfTextExtraction?.failed || 0;
+
+  lines.push('## PDF Health');
+  lines.push('');
+  lines.push(`Readable PDFs: ${succeeded} / ${attempted}`);
+  lines.push(`Failed PDFs: ${failed} / ${attempted}`);
+  lines.push('');
+
   lines.push('## PDF Text Extraction');
   lines.push('');
-  lines.push(`Attempted: ${result.pdfTextExtraction?.attempted || 0}`);
-  lines.push(`Succeeded: ${result.pdfTextExtraction?.succeeded || 0}`);
-  lines.push(`Failed: ${result.pdfTextExtraction?.failed || 0}`);
+  lines.push(`Attempted: ${attempted}`);
+  lines.push(`Succeeded: ${succeeded}`);
+  lines.push(`Failed: ${failed}`);
   lines.push('');
 
   lines.push('## PDF Files');

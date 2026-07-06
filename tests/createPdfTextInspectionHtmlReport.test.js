@@ -34,6 +34,9 @@ function run() {
   assert.ok(html.includes('PDF Text Inspection Report'));
   assert.ok(html.includes('Executive Summary'));
   assert.ok(html.includes('Recommended action'));
+  assert.ok(html.includes('PDF Health'));
+  assert.ok(html.includes('Readable PDFs:</strong> 1 / 1'));
+  assert.ok(html.includes('Failed PDFs:</strong> 0 / 1'));
   assert.ok(html.includes('This folder is ready for review'));
   assert.ok(html.includes('/demo/folder'));
   assert.ok(html.includes('contract.pdf'));
@@ -70,6 +73,8 @@ function run() {
   });
 
   assert.ok(failedHtml.includes('This folder needs review'));
+  assert.ok(failedHtml.includes('Readable PDFs:</strong> 0 / 2'));
+  assert.ok(failedHtml.includes('Failed PDFs:</strong> 2 / 2'));
   assert.ok(failedHtml.includes('Replace invalid PDFs with real readable PDF files'));
 
   console.log('createPdfTextInspectionHtmlReport.test.js passed');
