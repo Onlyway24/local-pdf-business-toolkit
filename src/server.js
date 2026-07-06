@@ -59,6 +59,38 @@ app.get('/api/commands', (req, res) => {
 });
 
 
+
+app.get('/api/reports/latest', (req, res) => {
+  const index = readReportsIndex();
+  const latestReport = index.reports[index.reports.length - 1];
+
+  if (!latestReport) {
+    res.json({
+      report: null
+    });
+    return;
+  }
+
+  res.json({
+    report: {
+      generatedAt: latestReport.generatedAt,
+      folderPath: latestReport.folderPath,
+      totalFiles: latestReport.totalFiles,
+      pdfFiles: latestReport.pdfFiles,
+      nonPdfFiles: latestReport.nonPdfFiles,
+      status: latestReport.status,
+      readinessScore: latestReport.readinessScore,
+      pdfHealth: latestReport.pdfHealth,
+      deliveryDecision: latestReport.deliveryDecision,
+      links: {
+        html: toPublicReportPath(latestReport.reportPaths?.htmlReportPath),
+        json: toPublicReportPath(latestReport.reportPaths?.jsonReportPath),
+        markdown: toPublicReportPath(latestReport.reportPaths?.markdownReportPath)
+      }
+    }
+  });
+});
+
 app.get('/api/reports', (req, res) => {
   const index = readReportsIndex();
 

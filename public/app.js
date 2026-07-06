@@ -307,10 +307,97 @@ async function loadRecentReports() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadRecentReports();
+  loadLatestReport();
 
   const refreshButton = document.getElementById('refresh-reports');
 
   if (refreshButton) {
     refreshButton.addEventListener('click', loadRecentReports);
   }
+
+  const refreshLatestButton = document.getElementById('refresh-latest-report');
+
+  if (refreshLatestButton) {
+    refreshLatestButton.addEventListener('click', loadLatestReport);
+  }
 });
+
+
+function renderLatestReport(report) {
+  const container = document.getElementById('latest-report');
+
+  if (!container) {
+    return;
+  }
+
+  if (!report) {
+    container.innerHTML = '<p class="muted">No reports generated yet. Run a PDF text inspection first.</p>';
+    return;
+  }
+
+  const decision = getReportDecision(report);
+  const reason = report.deliveryDecision?.reason || 'No reason available.';
+  const requiredAction = report.deliveryDecision?.requiredAction || '';
+  const readinessScore = typeof report.readinessScore === 'number'
+    ? `${report.readinessScore}%`
+    : 'N/A';
+
+  const htmlLink = createReportLink('Open HTML Report', report.links?.html);
+  const jsonLink = createReportLink('Open JSON Data', report.links?.json);
+  const markdownLink = createReportLink('Open Markdown', report.links?.markdown);
+  const links = [htmlLink, jsonLink, markdownLink].filter(Boolean).join('');
+
+  container.innerHTML = `
+    <article class="latest-report-card">
+      <div class="latest-report-hero">
+        <span class="status-pill">${report.status || 'UNKNOWN'}</span>
+        <span>${formatDate(report.generatedAt)}</span>
+      </div>
+
+      <h3>${report.folderPath || 'Unknown folder'}</h3>
+
+      <div class="latest-report-grid">
+        <div>
+          <span>Readiness</span>
+          <strong>${readinessScore}</strong>
+        </div>
+        <div>
+          <span>PDF Health</span>
+          <strong>${report.pdfHealth?.succeeded ?? 0}/${report.pdfHealth?.attempted ?? 0}</strong>
+        </div>
+        <div>
+          <span>Failed</span>
+          <strong>${report.pdfHealth?.failed ?? 0}</strong>
+        </div>
+      </div>
+
+      <div class="delivery-decision">
+        <strong>${decision}</strong>
+        <p>${reason}</p>
+        ${requiredAction ? `<small>${requiredAction}</small>` : ''}
+      </div>
+
+      <div class="report-links latest-actions">
+        ${links || '<span class="muted">No report links available.</span>'}
+      </div>
+    </article>
+  `;
+}
+
+async function loadLatestReport() {
+  const container = document.getElementById('latest-report');
+
+  if (container) {
+    container.innerHTML = '<p class="muted">Loading latest report...</p>';
+  }
+
+  try {
+    const response = await fetch('/api/reports/latest');
+    const data = await response.json();
+    renderLatestReport(data.report || null);
+  } catch (error) {
+    if (container) {
+      container.innerHTML = '<p class="muted">Unable to load latest report.</p>';
+    }
+  }
+}
