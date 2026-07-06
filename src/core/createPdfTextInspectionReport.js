@@ -81,9 +81,9 @@ function createPdfTextInspectionReport(result) {
   lines.push('## PDF Files');
   lines.push('');
 
-  const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
+  const pdfFilesForDetails = result.files.filter((file) => file.extension === '.pdf');
 
-  if (pdfFiles.length === 0) {
+  if (pdfFilesForDetails.length === 0) {
     lines.push('No PDF files found.');
     lines.push('');
   }
