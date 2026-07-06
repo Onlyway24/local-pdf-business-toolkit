@@ -129,3 +129,108 @@ document.getElementById('runner-form').addEventListener('submit', async (e) => {
     loader.classList.add('hidden');
   }
 });
+
+
+function formatDate(value) {
+  if (!value) {
+    return 'Unknown date';
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleString();
+}
+
+function createReportLink(label, href) {
+  if (!href) {
+    return '';
+  }
+
+  return `<a href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
+}
+
+function renderRecentReports(reports) {
+  const container = document.getElementById('recent-reports');
+
+  if (!container) {
+    return;
+  }
+
+  if (!reports || reports.length === 0) {
+    container.innerHTML = '<p class="muted">No reports generated yet. Run a PDF text inspection first.</p>';
+    return;
+  }
+
+  container.innerHTML = reports.map((report) => {
+    const status = report.status || 'UNKNOWN';
+    const decision = report.deliveryDecision?.decision || 'NO DECISION';
+    const reason = report.deliveryDecision?.reason || 'No reason available.';
+    const readinessScore = typeof report.readinessScore === 'number'
+      ? `${report.readinessScore}%`
+      : 'N/A';
+
+    const htmlLink = createReportLink('Open HTML', report.links?.html);
+    const jsonLink = createReportLink('Open JSON', report.links?.json);
+    const markdownLink = createReportLink('Open Markdown', report.links?.markdown);
+
+    const links = [htmlLink, jsonLink, markdownLink].filter(Boolean).join('');
+
+    return `
+      <article class="report-card">
+        <div class="report-card-top">
+          <span class="status-pill">${status}</span>
+          <span class="report-date">${formatDate(report.generatedAt)}</span>
+        </div>
+
+        <h3>${report.folderPath || 'Unknown folder'}</h3>
+
+        <div class="report-metrics">
+          <span>Readiness: <strong>${readinessScore}</strong></span>
+          <span>PDFs: <strong>${report.pdfFiles ?? 0}</strong></span>
+          <span>Failed: <strong>${report.pdfHealth?.failed ?? 0}</strong></span>
+        </div>
+
+        <div class="delivery-decision">
+          <strong>${decision}</strong>
+          <p>${reason}</p>
+        </div>
+
+        <div class="report-links">
+          ${links || '<span class="muted">No report links available.</span>'}
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+async function loadRecentReports() {
+  const container = document.getElementById('recent-reports');
+
+  if (container) {
+    container.innerHTML = '<p class="muted">Loading recent reports...</p>';
+  }
+
+  try {
+    const response = await fetch('/api/reports');
+    const data = await response.json();
+    renderRecentReports(data.reports || []);
+  } catch (error) {
+    if (container) {
+      container.innerHTML = '<p class="muted">Unable to load recent reports.</p>';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadRecentReports();
+
+  const refreshButton = document.getElementById('refresh-reports');
+
+  if (refreshButton) {
+    refreshButton.addEventListener('click', loadRecentReports);
+  }
+});
