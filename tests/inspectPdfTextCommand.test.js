@@ -40,7 +40,7 @@ async function run() {
 
   assert.ok(htmlReport.includes('<!doctype html>'));
   assert.ok(htmlReport.includes('PDF Text Inspection Report'));
-  assert.ok(htmlReport.includes('Status:</strong> PARTIAL'));
+  assert.ok(htmlReport.includes('<span class="status-badge status-partial">PARTIAL</span>'));
   assert.ok(htmlReport.includes('Readiness score:</strong> 60%'));
   assert.ok(htmlReport.includes('PDF Text Extraction'));
 

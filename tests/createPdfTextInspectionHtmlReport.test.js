@@ -32,6 +32,8 @@ function run() {
 
   assert.ok(html.includes('<!doctype html>'));
   assert.ok(html.includes('PDF Text Inspection Report'));
+  assert.ok(html.includes('status-badge status-ready'));
+  assert.ok(html.includes('<span class="status-badge status-ready">READY</span>'));
   assert.ok(html.includes('Executive Summary'));
   assert.ok(html.includes('Recommended action'));
   assert.ok(html.includes('PDF Health'));
@@ -73,9 +75,44 @@ function run() {
   });
 
   assert.ok(failedHtml.includes('This folder needs review'));
+  assert.ok(failedHtml.includes('status-badge status-ready'));
   assert.ok(failedHtml.includes('Readable PDFs:</strong> 0 / 2'));
   assert.ok(failedHtml.includes('Failed PDFs:</strong> 2 / 2'));
   assert.ok(failedHtml.includes('Replace invalid PDFs with real readable PDF files'));
+
+  const partialHtml = createPdfTextInspectionHtmlReport({
+    folderPath: '/partial/folder',
+    totalFiles: 4,
+    pdfFiles: 3,
+    nonPdfFiles: 1,
+    status: 'PARTIAL',
+    readinessScore: 60,
+    pdfTextExtraction: {
+      attempted: 3,
+      succeeded: 1,
+      failed: 2
+    },
+    files: []
+  });
+
+  assert.ok(partialHtml.includes('<span class="status-badge status-partial">PARTIAL</span>'));
+
+  const needsReviewHtml = createPdfTextInspectionHtmlReport({
+    folderPath: '/needs-review/folder',
+    totalFiles: 2,
+    pdfFiles: 2,
+    nonPdfFiles: 0,
+    status: 'NEEDS REVIEW',
+    readinessScore: 0,
+    pdfTextExtraction: {
+      attempted: 2,
+      succeeded: 0,
+      failed: 2
+    },
+    files: []
+  });
+
+  assert.ok(needsReviewHtml.includes('<span class="status-badge status-needs-review">NEEDS REVIEW</span>'));
 
   console.log('createPdfTextInspectionHtmlReport.test.js passed');
 }
