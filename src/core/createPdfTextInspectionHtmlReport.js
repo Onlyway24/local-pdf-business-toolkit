@@ -140,6 +140,12 @@ function createPdfTextInspectionHtmlReport(result) {
     </section>
 
     <section class="summary">
+      <h2>PDF Health</h2>
+      <p><strong>Readable PDFs:</strong> ${escapeHtml(result.pdfTextExtraction?.succeeded || 0)} / ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
+      <p><strong>Failed PDFs:</strong> ${escapeHtml(result.pdfTextExtraction?.failed || 0)} / ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
+    </section>
+
+    <section class="summary">
       <h2>PDF Text Extraction</h2>
       <p><strong>Attempted:</strong> ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
       <p><strong>Succeeded:</strong> ${escapeHtml(result.pdfTextExtraction?.succeeded || 0)}</p>

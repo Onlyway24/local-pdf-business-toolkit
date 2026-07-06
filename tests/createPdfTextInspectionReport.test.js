@@ -39,6 +39,9 @@ function run() {
 
   assert.ok(report.includes('# PDF Text Inspection Report'));
   assert.ok(report.includes('Folder: /demo/folder'));
+  assert.ok(report.includes('## PDF Health'));
+  assert.ok(report.includes('Readable PDFs: 1 / 1'));
+  assert.ok(report.includes('Failed PDFs: 0 / 1'));
   assert.ok(report.includes('Attempted: 1'));
   assert.ok(report.includes('Succeeded: 1'));
   assert.ok(report.includes('### contract.pdf'));
