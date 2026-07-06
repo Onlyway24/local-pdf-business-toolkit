@@ -24,7 +24,8 @@
     "zip:latest": "LATEST_PACK=$(ls -td outputs/client-packs/*/ | head -1) && node src/index.js zip-client-pack \"$LATEST_PACK\"",
     "demo:full": "node src/index.js full-demo samples \"Mario Rossi\"",
     "demo:full:review": "node src/index.js full-demo tests/fixtures/duplicate-client-folder \"Cliente Duplicati\"",
-    "inspect:pdf-text": "node src/index.js inspect-pdf-text samples"
+    "inspect:pdf-text": "node src/index.js inspect-pdf-text samples",
+    "demo:pdf-report": "node src/index.js inspect-pdf-text samples"
   },
   "keywords": [],
   "author": "",

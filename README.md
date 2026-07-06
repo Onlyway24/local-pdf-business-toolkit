@@ -244,6 +244,12 @@ Run PDF text inspection from the CLI:
 
     npm run inspect:pdf-text
 
+Run the sample PDF report demo:
+
+    npm run demo:pdf-report
+
+This demo command runs PDF text inspection on the included `samples` folder and generates Markdown and HTML reports under `outputs/reports/`.
+
 The command scans the selected folder, attempts local PDF text extraction, and saves reports under:
 
     outputs/reports/
