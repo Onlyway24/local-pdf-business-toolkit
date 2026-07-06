@@ -7,6 +7,46 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
+function createExecutiveSummary(result) {
+  const attempted = result.pdfTextExtraction?.attempted || 0;
+  const succeeded = result.pdfTextExtraction?.succeeded || 0;
+  const failed = result.pdfTextExtraction?.failed || 0;
+
+  if (attempted === 0) {
+    return 'No PDF files were found in this folder. The folder can still be organized, but there is no PDF text to inspect.';
+  }
+
+  if (failed === 0) {
+    return `This folder is ready for review. All ${attempted} PDF file(s) were readable and text extraction completed successfully.`;
+  }
+
+  if (succeeded === 0) {
+    return `This folder needs review. ${attempted} PDF file(s) were checked, but none could be read successfully. The files may be invalid, scanned, corrupted, or placeholders.`;
+  }
+
+  return `This folder is partially ready. ${succeeded} of ${attempted} PDF file(s) were readable, while ${failed} need manual review.`;
+}
+
+function createRecommendedAction(result) {
+  const attempted = result.pdfTextExtraction?.attempted || 0;
+  const succeeded = result.pdfTextExtraction?.succeeded || 0;
+  const failed = result.pdfTextExtraction?.failed || 0;
+
+  if (attempted === 0) {
+    return 'Add PDF files if text inspection is required.';
+  }
+
+  if (failed === 0) {
+    return 'Proceed with the client pack or review the extracted text before delivery.';
+  }
+
+  if (succeeded === 0) {
+    return 'Replace invalid PDFs with real readable PDF files, or review them manually before sending client deliverables.';
+  }
+
+  return 'Review the failed PDFs manually and continue with the readable documents.';
+}
+
 function createPdfTextInspectionHtmlReport(result) {
   const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
 
@@ -82,6 +122,12 @@ function createPdfTextInspectionHtmlReport(result) {
 <body>
   <main class="container">
     <h1>PDF Text Inspection Report</h1>
+
+    <section class="summary">
+      <h2>Executive Summary</h2>
+      <p>${escapeHtml(createExecutiveSummary(result))}</p>
+      <p><strong>Recommended action:</strong> ${escapeHtml(createRecommendedAction(result))}</p>
+    </section>
 
     <section class="summary">
       <h2>Summary</h2>
