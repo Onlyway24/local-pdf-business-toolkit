@@ -42,6 +42,10 @@ function run() {
   assert.ok(report.includes('## PDF Health'));
   assert.ok(report.includes('Readable PDFs: 1 / 1'));
   assert.ok(report.includes('Failed PDFs: 0 / 1'));
+  assert.ok(report.includes('## Client Delivery Decision'));
+  assert.ok(report.includes('Decision: READY TO DELIVER'));
+  assert.ok(report.includes('Reason: All attempted PDF files were readable.'));
+  assert.ok(report.includes('Required action: Optional final human review before sending client deliverables.'));
   assert.ok(report.includes('## Manual Review Checklist'));
   assert.ok(report.includes('### Needs manual review'));
   assert.ok(report.includes('- None. All attempted PDFs were readable.'));

@@ -63,6 +63,42 @@ function createStatusBadgeClass(status) {
   return 'status-badge status-empty';
 }
 
+function createClientDeliveryDecision(result) {
+  const attempted = result.pdfTextExtraction?.attempted || 0;
+  const succeeded = result.pdfTextExtraction?.succeeded || 0;
+  const failed = result.pdfTextExtraction?.failed || 0;
+
+  if (attempted === 0) {
+    return {
+      decision: 'NO PDF REVIEW REQUIRED',
+      reason: 'No PDF files were found for text inspection.',
+      action: 'Proceed only if PDF text inspection is not required for this delivery.'
+    };
+  }
+
+  if (failed === 0) {
+    return {
+      decision: 'READY TO DELIVER',
+      reason: 'All attempted PDF files were readable.',
+      action: 'Optional final human review before sending client deliverables.'
+    };
+  }
+
+  if (succeeded === 0) {
+    return {
+      decision: 'DO NOT DELIVER YET',
+      reason: `${failed} PDF file(s) need manual review before delivery.`,
+      action: 'Replace invalid PDFs or review them manually before sending client deliverables.'
+    };
+  }
+
+  return {
+    decision: 'REVIEW BEFORE DELIVERY',
+    reason: `${failed} of ${attempted} PDF file(s) need manual review before delivery.`,
+    action: 'Review or replace failed PDFs, then regenerate the report before delivery.'
+  };
+}
+
 function createManualReviewChecklistHtml(pdfFiles) {
   const readablePdfFiles = pdfFiles.filter((file) => file.pdfText?.success);
   const failedPdfFiles = pdfFiles.filter((file) => !file.pdfText?.success);
@@ -98,6 +134,7 @@ function createManualReviewChecklistHtml(pdfFiles) {
 
 function createPdfTextInspectionHtmlReport(result) {
   const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
+  const deliveryDecision = createClientDeliveryDecision(result);
 
   const pdfSections = pdfFiles.length === 0
     ? '<p>No PDF files found.</p>'
@@ -223,6 +260,13 @@ function createPdfTextInspectionHtmlReport(result) {
       <h2>PDF Health</h2>
       <p><strong>Readable PDFs:</strong> ${escapeHtml(result.pdfTextExtraction?.succeeded || 0)} / ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
       <p><strong>Failed PDFs:</strong> ${escapeHtml(result.pdfTextExtraction?.failed || 0)} / ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
+    </section>
+
+    <section class="summary">
+      <h2>Client Delivery Decision</h2>
+      <p><strong>Decision:</strong> ${escapeHtml(deliveryDecision.decision)}</p>
+      <p><strong>Reason:</strong> ${escapeHtml(deliveryDecision.reason)}</p>
+      <p><strong>Required action:</strong> ${escapeHtml(deliveryDecision.action)}</p>
     </section>
 
     <section class="summary checklist-section">
