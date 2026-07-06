@@ -113,6 +113,17 @@ function run() {
         succeeded: 1,
         failed: 0
       },
+      files: [
+        {
+          name: 'ready-contract.pdf',
+          relativePath: 'ready-contract.pdf',
+          extension: '.pdf',
+          pdfText: {
+            success: true,
+            error: null
+          }
+        }
+      ],
       deliveryDecision: {
         decision: 'READY TO DELIVER'
       }
