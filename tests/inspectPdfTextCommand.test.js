@@ -59,8 +59,13 @@ async function run() {
   assert.ok(Array.isArray(jsonReport.manualReview.readablePdfFiles));
   assert.ok(Array.isArray(reportIndex.reports));
   assert.ok(reportIndex.reports.length >= 1);
-  assert.strictEqual(reportIndex.reports[reportIndex.reports.length - 1].status, 'PARTIAL');
-  assert.ok(reportIndex.reports[reportIndex.reports.length - 1].reportPaths.jsonReportPath.endsWith('.json'));
+  const latestIndexEntry = reportIndex.reports[reportIndex.reports.length - 1];
+
+  assert.strictEqual(latestIndexEntry.status, 'PARTIAL');
+  assert.strictEqual(latestIndexEntry.deliveryDecision.decision, 'REVIEW BEFORE DELIVERY');
+  assert.strictEqual(latestIndexEntry.deliveryDecision.reason, '2 of 3 PDF file(s) need manual review before delivery.');
+  assert.ok(latestIndexEntry.deliveryDecision.requiredAction.includes('Review or replace failed PDFs'));
+  assert.ok(latestIndexEntry.reportPaths.jsonReportPath.endsWith('.json'));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');
   assert.strictEqual(pdfFiles.length, 3);

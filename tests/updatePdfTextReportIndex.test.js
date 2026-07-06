@@ -49,7 +49,9 @@ function run() {
   assert.strictEqual(firstIndex.reports[0].pdfHealth.attempted, 3);
   assert.strictEqual(firstIndex.reports[0].pdfHealth.succeeded, 1);
   assert.strictEqual(firstIndex.reports[0].pdfHealth.failed, 2);
-  assert.strictEqual(firstIndex.reports[0].deliveryDecision, 'REVIEW BEFORE DELIVERY');
+  assert.strictEqual(firstIndex.reports[0].deliveryDecision.decision, 'REVIEW BEFORE DELIVERY');
+  assert.strictEqual(firstIndex.reports[0].deliveryDecision.reason, '2 of 3 PDF file(s) need manual review before delivery.');
+  assert.strictEqual(firstIndex.reports[0].deliveryDecision.requiredAction, 'Review or replace failed PDFs, then regenerate the report before delivery.');
   assert.strictEqual(firstIndex.reports[0].reportPaths.markdownReportPath, reportPaths.markdownPath);
   assert.strictEqual(firstIndex.reports[0].reportPaths.htmlReportPath, reportPaths.htmlPath);
   assert.strictEqual(firstIndex.reports[0].reportPaths.jsonReportPath, reportPaths.jsonPath);
@@ -77,7 +79,8 @@ function run() {
   const secondIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
   assert.strictEqual(secondIndex.reports.length, 2);
   assert.strictEqual(secondIndex.reports[1].status, 'READY');
-  assert.strictEqual(secondIndex.reports[1].deliveryDecision, 'READY TO DELIVER');
+  assert.strictEqual(secondIndex.reports[1].deliveryDecision.decision, 'READY TO DELIVER');
+  assert.strictEqual(secondIndex.reports[1].deliveryDecision.reason, 'All attempted PDF files were readable.');
 
   console.log('updatePdfTextReportIndex.test.js passed');
 }
