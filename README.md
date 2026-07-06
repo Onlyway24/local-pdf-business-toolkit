@@ -216,3 +216,60 @@ This is useful when working with sensitive files such as:
 - identity documents
 - business documents
 - private archives
+
+## Local Web UI
+
+Run the local web interface:
+
+    npm run ui
+
+Then open:
+
+    http://localhost:3000
+
+The web UI lets you run the available local commands from the browser.
+
+Recommended PDF text workflow:
+
+1. Enter a folder path, for example `samples`.
+2. Select `Ispeziona Testo PDF (PDF Text)`.
+3. Run the analysis.
+4. Open the generated HTML report from the result card.
+
+Everything runs locally. Files are not uploaded to a cloud service.
+
+## PDF Text Inspection Reports
+
+Run PDF text inspection from the CLI:
+
+    npm run inspect:pdf-text
+
+The command scans the selected folder, attempts local PDF text extraction, and saves reports under:
+
+    outputs/reports/
+
+For every run, the toolkit creates:
+
+- a Markdown report
+- an HTML report
+
+The HTML report includes:
+
+- Executive Summary
+- recommended action
+- folder summary
+- PDF extraction summary
+- per-file PDF status
+- page count
+- text preview when available
+- extraction errors when a PDF cannot be read
+
+The Executive Summary is written in client-facing language. It explains whether the folder is ready, partially ready, or needs review.
+
+## Known Limitations
+
+- Classification is currently filename-based.
+- The demo PDFs in `samples/` are placeholder files, so extraction failure is expected for them.
+- Scanned PDFs may require OCR, which is not currently implemented.
+- Human review is still required before sending real client deliverables.
+- The local web UI is intended for local use, not public deployment.
