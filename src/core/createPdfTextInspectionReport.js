@@ -1,3 +1,39 @@
+function createClientDeliveryDecision(result) {
+  const attempted = result.pdfTextExtraction?.attempted || 0;
+  const succeeded = result.pdfTextExtraction?.succeeded || 0;
+  const failed = result.pdfTextExtraction?.failed || 0;
+
+  if (attempted === 0) {
+    return {
+      decision: 'NO PDF REVIEW REQUIRED',
+      reason: 'No PDF files were found for text inspection.',
+      action: 'Proceed only if PDF text inspection is not required for this delivery.'
+    };
+  }
+
+  if (failed === 0) {
+    return {
+      decision: 'READY TO DELIVER',
+      reason: 'All attempted PDF files were readable.',
+      action: 'Optional final human review before sending client deliverables.'
+    };
+  }
+
+  if (succeeded === 0) {
+    return {
+      decision: 'DO NOT DELIVER YET',
+      reason: `${failed} PDF file(s) need manual review before delivery.`,
+      action: 'Replace invalid PDFs or review them manually before sending client deliverables.'
+    };
+  }
+
+  return {
+    decision: 'REVIEW BEFORE DELIVERY',
+    reason: `${failed} of ${attempted} PDF file(s) need manual review before delivery.`,
+    action: 'Review or replace failed PDFs, then regenerate the report before delivery.'
+  };
+}
+
 function createPdfTextInspectionReport(result) {
   const lines = [];
 
@@ -21,6 +57,15 @@ function createPdfTextInspectionReport(result) {
   lines.push('');
   lines.push(`Readable PDFs: ${succeeded} / ${attempted}`);
   lines.push(`Failed PDFs: ${failed} / ${attempted}`);
+  lines.push('');
+
+  const deliveryDecision = createClientDeliveryDecision(result);
+
+  lines.push('## Client Delivery Decision');
+  lines.push('');
+  lines.push(`Decision: ${deliveryDecision.decision}`);
+  lines.push(`Reason: ${deliveryDecision.reason}`);
+  lines.push(`Required action: ${deliveryDecision.action}`);
   lines.push('');
 
   const pdfFiles = result.files.filter((file) => file.extension === '.pdf');

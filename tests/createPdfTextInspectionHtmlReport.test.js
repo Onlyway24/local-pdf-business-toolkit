@@ -39,6 +39,10 @@ function run() {
   assert.ok(html.includes('PDF Health'));
   assert.ok(html.includes('Readable PDFs:</strong> 1 / 1'));
   assert.ok(html.includes('Failed PDFs:</strong> 0 / 1'));
+  assert.ok(html.includes('Client Delivery Decision'));
+  assert.ok(html.includes('READY TO DELIVER'));
+  assert.ok(html.includes('All attempted PDF files were readable.'));
+  assert.ok(html.includes('Optional final human review before sending client deliverables.'));
   assert.ok(html.includes('Manual Review Checklist'));
   assert.ok(html.includes('Needs manual review'));
   assert.ok(html.includes('None. All attempted PDFs were readable.'));
@@ -83,6 +87,10 @@ function run() {
   assert.ok(failedHtml.includes('Readable PDFs:</strong> 0 / 2'));
   assert.ok(failedHtml.includes('Failed PDFs:</strong> 2 / 2'));
   assert.ok(failedHtml.includes('Replace invalid PDFs with real readable PDF files'));
+  assert.ok(failedHtml.includes('Client Delivery Decision'));
+  assert.ok(failedHtml.includes('DO NOT DELIVER YET'));
+  assert.ok(failedHtml.includes('2 PDF file(s) need manual review before delivery.'));
+  assert.ok(failedHtml.includes('Replace invalid PDFs or review them manually before sending client deliverables.'));
   assert.ok(failedHtml.includes('Manual Review Checklist'));
   assert.ok(failedHtml.includes('Readable PDFs'));
 
@@ -102,6 +110,9 @@ function run() {
   });
 
   assert.ok(partialHtml.includes('<span class="status-badge status-partial">PARTIAL</span>'));
+  assert.ok(partialHtml.includes('REVIEW BEFORE DELIVERY'));
+  assert.ok(partialHtml.includes('2 of 3 PDF file(s) need manual review before delivery.'));
+  assert.ok(partialHtml.includes('Review or replace failed PDFs, then regenerate the report before delivery.'));
 
   const needsReviewHtml = createPdfTextInspectionHtmlReport({
     folderPath: '/needs-review/folder',
