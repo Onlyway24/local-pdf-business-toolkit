@@ -20,6 +20,60 @@ function toPublicReportPath(filePath) {
   return `/reports/${filePath.slice(index + marker.length)}`;
 }
 
+
+function getFolderName(folderPath) {
+  if (!folderPath) {
+    return 'Unknown folder';
+  }
+
+  return path.basename(folderPath);
+}
+
+function isReadyReport(report) {
+  return report.status === 'READY'
+    || report.deliveryDecision?.decision === 'READY TO DELIVER';
+}
+
+function createReportResponse(report) {
+  return {
+    generatedAt: report.generatedAt,
+    folderPath: report.folderPath,
+    folderName: getFolderName(report.folderPath),
+    totalFiles: report.totalFiles,
+    pdfFiles: report.pdfFiles,
+    nonPdfFiles: report.nonPdfFiles,
+    status: report.status,
+    readinessScore: report.readinessScore,
+    pdfHealth: report.pdfHealth,
+    deliveryDecision: report.deliveryDecision,
+    links: {
+      html: toPublicReportPath(report.reportPaths?.htmlReportPath),
+      json: toPublicReportPath(report.reportPaths?.jsonReportPath),
+      markdown: toPublicReportPath(report.reportPaths?.markdownReportPath)
+    }
+  };
+}
+
+function createReportsStats(reports) {
+  const readinessScores = reports
+    .map((report) => report.readinessScore)
+    .filter((score) => typeof score === 'number');
+
+  const averageReadiness = readinessScores.length === 0
+    ? 0
+    : Math.round(readinessScores.reduce((sum, score) => sum + score, 0) / readinessScores.length);
+
+  const readyReports = reports.filter(isReadyReport).length;
+  const reviewReports = reports.length - readyReports;
+
+  return {
+    totalReports: reports.length,
+    averageReadiness,
+    readyReports,
+    reviewReports
+  };
+}
+
 function readReportsIndex() {
   const indexPath = path.resolve('outputs', 'reports', 'index.json');
 
@@ -72,50 +126,24 @@ app.get('/api/reports/latest', (req, res) => {
   }
 
   res.json({
-    report: {
-      generatedAt: latestReport.generatedAt,
-      folderPath: latestReport.folderPath,
-      totalFiles: latestReport.totalFiles,
-      pdfFiles: latestReport.pdfFiles,
-      nonPdfFiles: latestReport.nonPdfFiles,
-      status: latestReport.status,
-      readinessScore: latestReport.readinessScore,
-      pdfHealth: latestReport.pdfHealth,
-      deliveryDecision: latestReport.deliveryDecision,
-      links: {
-        html: toPublicReportPath(latestReport.reportPaths?.htmlReportPath),
-        json: toPublicReportPath(latestReport.reportPaths?.jsonReportPath),
-        markdown: toPublicReportPath(latestReport.reportPaths?.markdownReportPath)
-      }
-    }
+    report: createReportResponse(latestReport)
   });
 });
 
 app.get('/api/reports', (req, res) => {
   const index = readReportsIndex();
+  const limit = Number.parseInt(req.query.limit || '10', 10);
+  const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.min(limit, 50) : 10;
 
-  const reports = index.reports
+  const allReports = index.reports.slice();
+  const reports = allReports
     .slice()
     .reverse()
-    .slice(0, 20)
-    .map((report) => ({
-      generatedAt: report.generatedAt,
-      folderPath: report.folderPath,
-      totalFiles: report.totalFiles,
-      pdfFiles: report.pdfFiles,
-      nonPdfFiles: report.nonPdfFiles,
-      status: report.status,
-      readinessScore: report.readinessScore,
-      pdfHealth: report.pdfHealth,
-      deliveryDecision: report.deliveryDecision,
-      links: {
-        html: toPublicReportPath(report.reportPaths?.htmlReportPath),
-        json: toPublicReportPath(report.reportPaths?.jsonReportPath),
-        markdown: toPublicReportPath(report.reportPaths?.markdownReportPath)
-      }
-    }));
+    .slice(0, safeLimit)
+    .map(createReportResponse);
 
   res.json({
+    stats: createReportsStats(allReports),
     reports
   });
 });
