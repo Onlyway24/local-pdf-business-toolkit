@@ -26,14 +26,17 @@ async function run() {
   assert.ok(execution.result.markdownReportPath);
   assert.ok(execution.result.htmlReportPath);
   assert.ok(execution.result.jsonReportPath);
+  assert.ok(execution.result.reportIndexPath);
 
   assert.ok(fs.existsSync(execution.result.markdownReportPath));
   assert.ok(fs.existsSync(execution.result.htmlReportPath));
   assert.ok(fs.existsSync(execution.result.jsonReportPath));
+  assert.ok(fs.existsSync(execution.result.reportIndexPath));
 
   const markdownReport = fs.readFileSync(execution.result.markdownReportPath, 'utf8');
   const htmlReport = fs.readFileSync(execution.result.htmlReportPath, 'utf8');
   const jsonReport = JSON.parse(fs.readFileSync(execution.result.jsonReportPath, 'utf8'));
+  const reportIndex = JSON.parse(fs.readFileSync(execution.result.reportIndexPath, 'utf8'));
 
   assert.ok(markdownReport.includes('# PDF Text Inspection Report'));
   assert.ok(markdownReport.includes('Status: PARTIAL'));
@@ -54,6 +57,15 @@ async function run() {
   assert.strictEqual(jsonReport.deliveryDecision.decision, 'REVIEW BEFORE DELIVERY');
   assert.ok(Array.isArray(jsonReport.manualReview.failedPdfFiles));
   assert.ok(Array.isArray(jsonReport.manualReview.readablePdfFiles));
+  assert.ok(Array.isArray(reportIndex.reports));
+  assert.ok(reportIndex.reports.length >= 1);
+  const latestIndexEntry = reportIndex.reports[reportIndex.reports.length - 1];
+
+  assert.strictEqual(latestIndexEntry.status, 'PARTIAL');
+  assert.strictEqual(latestIndexEntry.deliveryDecision.decision, 'REVIEW BEFORE DELIVERY');
+  assert.strictEqual(latestIndexEntry.deliveryDecision.reason, '2 of 3 PDF file(s) need manual review before delivery.');
+  assert.ok(latestIndexEntry.deliveryDecision.requiredAction.includes('Review or replace failed PDFs'));
+  assert.ok(latestIndexEntry.reportPaths.jsonReportPath.endsWith('.json'));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');
   assert.strictEqual(pdfFiles.length, 3);

@@ -58,6 +58,11 @@ function printSuccess(title, result) {
     console.log("JSON report:");
     console.log(result.jsonReportPath);
   }
+
+  if (result.reportIndexPath) {
+    console.log("Report index:");
+    console.log(result.reportIndexPath);
+  }
 }
 
 async function main() {

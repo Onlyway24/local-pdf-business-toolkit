@@ -6,6 +6,7 @@ const { enrichScanWithPdfText } = require('../core/enrichScanWithPdfText');
 const { createPdfTextInspectionReport } = require('../core/createPdfTextInspectionReport');
 const { createPdfTextInspectionHtmlReport } = require('../core/createPdfTextInspectionHtmlReport');
 const { createPdfTextInspectionJsonReport } = require('../core/createPdfTextInspectionJsonReport');
+const { updatePdfTextReportIndex } = require('../core/updatePdfTextReportIndex');
 
 function createReportPaths() {
   const reportsRoot = path.resolve('outputs', 'reports');
@@ -61,12 +62,18 @@ async function runInspectPdfTextCommand(folderPath) {
   fs.writeFileSync(reportPaths.htmlPath, htmlReport);
   fs.writeFileSync(reportPaths.jsonPath, jsonReport);
 
+  const reportIndex = updatePdfTextReportIndex({
+    result,
+    reportPaths
+  });
+
   return {
     ...result,
     savedPath: reportPaths.markdownPath,
     markdownReportPath: reportPaths.markdownPath,
     htmlReportPath: reportPaths.htmlPath,
-    jsonReportPath: reportPaths.jsonPath
+    jsonReportPath: reportPaths.jsonPath,
+    reportIndexPath: reportIndex.indexPath
   };
 }
 
