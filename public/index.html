@@ -114,6 +114,31 @@
           <button id="refresh-reports" type="button">Refresh</button>
         </div>
 
+        <div id="reports-dashboard-stats" class="reports-dashboard-stats">
+          <div class="stat-card">
+            <span>Total Reports</span>
+            <strong id="stat-total-reports">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Avg Readiness</span>
+            <strong id="stat-average-readiness">0%</strong>
+          </div>
+          <div class="stat-card">
+            <span>Ready</span>
+            <strong id="stat-ready-reports">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Needs Review</span>
+            <strong id="stat-review-reports">0</strong>
+          </div>
+        </div>
+
+        <div class="report-filters" aria-label="Report filters">
+          <button class="report-filter is-active" type="button" data-filter="all">All</button>
+          <button class="report-filter" type="button" data-filter="ready">Ready</button>
+          <button class="report-filter" type="button" data-filter="review">Review</button>
+        </div>
+
         <div id="recent-reports" class="recent-reports">
           <p class="muted">No reports loaded yet.</p>
         </div>

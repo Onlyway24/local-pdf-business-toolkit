@@ -131,6 +131,9 @@ document.getElementById('runner-form').addEventListener('submit', async (e) => {
 });
 
 
+let recentReportsCache = [];
+let activeReportFilter = 'all';
+
 function formatDate(value) {
   if (!value) {
     return 'Unknown date';
@@ -145,7 +148,65 @@ function formatDate(value) {
   return date.toLocaleString();
 }
 
-function createReportLink(label, href) {
+function getReportDecision(report) {
+  return report.deliveryDecision?.decision || 'NO DECISION';
+}
+
+function isReadyReport(report) {
+  return getReportDecision(report) === 'READY TO DELIVER' || report.status === 'READY';
+}
+
+function isReviewReport(report) {
+  return !isReadyReport(report);
+}
+
+function filterReports(reports) {
+  if (activeReportFilter === 'ready') {
+    return reports.filter(isReadyReport);
+  }
+
+  if (activeReportFilter === 'review') {
+    return reports.filter(isReviewReport);
+  }
+
+  return reports;
+}
+
+function updateDashboardStats(reports) {
+  const total = reports.length;
+  const readinessScores = reports
+    .map((report) => report.readinessScore)
+    .filter((score) => typeof score === 'number');
+
+  const averageReadiness = readinessScores.length === 0
+    ? 0
+    : Math.round(readinessScores.reduce((sum, score) => sum + score, 0) / readinessScores.length);
+
+  const readyReports = reports.filter(isReadyReport).length;
+  const reviewReports = reports.filter(isReviewReport).length;
+
+  const totalElement = document.getElementById('stat-total-reports');
+  const averageElement = document.getElementById('stat-average-readiness');
+  const readyElement = document.getElementById('stat-ready-reports');
+  const reviewElement = document.getElementById('stat-review-reports');
+
+  if (totalElement) totalElement.textContent = String(total);
+  if (averageElement) averageElement.textContent = `${averageReadiness}%`;
+  if (readyElement) readyElement.textContent = String(readyReports);
+  if (reviewElement) reviewElement.textContent = String(reviewReports);
+}
+
+function setActiveReportFilter(filter) {
+  activeReportFilter = filter;
+
+  document.querySelectorAll('.report-filter').forEach((button) => {
+    button.classList.toggle('is-active', button.dataset.filter === filter);
+  });
+
+  renderRecentReports(recentReportsCache);
+}
+
+
   if (!href) {
     return '';
   }
@@ -160,18 +221,33 @@ function renderRecentReports(reports) {
     return;
   }
 
-  if (!reports || reports.length === 0) {
+  recentReportsCache = Array.isArray(reports) ? reports : [];
+  updateDashboardStats(recentReportsCache);
+
+  const visibleReports = filterReports(recentReportsCache);
+
+  if (recentReportsCache.length === 0) {
     container.innerHTML = '<p class="muted">No reports generated yet. Run a PDF text inspection first.</p>';
     return;
   }
 
-  container.innerHTML = reports.map((report) => {
+  if (visibleReports.length === 0) {
+    container.innerHTML = '<p class="muted">No reports match this filter.</p>';
+    return;
+  }
+
+  container.innerHTML = visibleReports.map((report) => {
     const status = report.status || 'UNKNOWN';
-    const decision = report.deliveryDecision?.decision || 'NO DECISION';
+    const decision = getReportDecision(report);
     const reason = report.deliveryDecision?.reason || 'No reason available.';
+    const requiredAction = report.deliveryDecision?.requiredAction || '';
     const readinessScore = typeof report.readinessScore === 'number'
       ? `${report.readinessScore}%`
       : 'N/A';
+
+    const failedCount = report.pdfHealth?.failed ?? 0;
+    const succeededCount = report.pdfHealth?.succeeded ?? 0;
+    const attemptedCount = report.pdfHealth?.attempted ?? 0;
 
     const htmlLink = createReportLink('Open HTML', report.links?.html);
     const jsonLink = createReportLink('Open JSON', report.links?.json);
@@ -179,8 +255,10 @@ function renderRecentReports(reports) {
 
     const links = [htmlLink, jsonLink, markdownLink].filter(Boolean).join('');
 
+    const statusClass = isReadyReport(report) ? 'status-ready-card' : 'status-review-card';
+
     return `
-      <article class="report-card">
+      <article class="report-card ${statusClass}">
         <div class="report-card-top">
           <span class="status-pill">${status}</span>
           <span class="report-date">${formatDate(report.generatedAt)}</span>
@@ -189,14 +267,16 @@ function renderRecentReports(reports) {
         <h3>${report.folderPath || 'Unknown folder'}</h3>
 
         <div class="report-metrics">
-          <span>Readiness: <strong>${readinessScore}</strong></span>
-          <span>PDFs: <strong>${report.pdfFiles ?? 0}</strong></span>
-          <span>Failed: <strong>${report.pdfHealth?.failed ?? 0}</strong></span>
+          <span>Readiness <strong>${readinessScore}</strong></span>
+          <span>PDFs <strong>${report.pdfFiles ?? 0}</strong></span>
+          <span>Readable <strong>${succeededCount}/${attemptedCount}</strong></span>
+          <span>Failed <strong>${failedCount}</strong></span>
         </div>
 
         <div class="delivery-decision">
           <strong>${decision}</strong>
           <p>${reason}</p>
+          ${requiredAction ? `<small>${requiredAction}</small>` : ''}
         </div>
 
         <div class="report-links">
