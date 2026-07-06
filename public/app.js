@@ -325,6 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (refreshLatestButton) {
     refreshLatestButton.addEventListener('click', loadLatestReport);
   }
+
+  const clearHistoryButton = document.getElementById('clear-report-history');
+
+  if (clearHistoryButton) {
+    clearHistoryButton.addEventListener('click', clearReportHistory);
+  }
 });
 
 
@@ -404,5 +410,35 @@ async function loadLatestReport() {
     if (container) {
       container.innerHTML = '<p class="muted">Unable to load latest report.</p>';
     }
+  }
+}
+
+
+async function clearReportHistory() {
+  const confirmed = window.confirm(
+    'Clear local report history? A backup of the report index will be created first. Generated report files will not be deleted.'
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/reports/history', {
+      method: 'DELETE'
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error('Clear history failed.');
+    }
+
+    await loadRecentReports();
+    await loadLatestReport();
+
+    window.alert(`Report history cleared. Backup created: ${result.backupPath || 'no previous history'}`);
+  } catch (error) {
+    window.alert('Unable to clear report history.');
   }
 }
