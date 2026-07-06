@@ -148,6 +148,18 @@ app.get('/api/reports', (req, res) => {
   });
 });
 
+
+app.delete('/api/reports/history', (req, res) => {
+  const result = clearPdfTextReportHistory();
+
+  res.json({
+    success: true,
+    indexPath: result.indexPath,
+    backupPath: result.backupPath,
+    clearedReports: result.clearedReports
+  });
+});
+
 app.post('/api/run', async (req, res) => {
   const { command, folderPath, clientName } = req.body;
 
