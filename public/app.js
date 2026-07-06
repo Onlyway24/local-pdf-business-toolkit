@@ -394,6 +394,10 @@ function renderLatestReport(report) {
         ${requiredAction ? `<small>${requiredAction}</small>` : ''}
       </div>
 
+      <div class="latest-action-summary">
+        ${report.actionSummary || 'Review report details before delivery.'}
+      </div>
+
       <div class="report-links latest-actions">
         ${links || '<span class="muted">No report links available.</span>'}
       </div>

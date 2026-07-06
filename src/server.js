@@ -35,6 +35,23 @@ function isReadyReport(report) {
     || report.deliveryDecision?.decision === 'READY TO DELIVER';
 }
 
+
+function createActionSummary(report) {
+  const attempted = report.pdfHealth?.attempted || 0;
+  const failed = report.pdfHealth?.failed || 0;
+  const decision = report.deliveryDecision?.decision || '';
+
+  if (attempted === 0 || decision === 'NO PDF REVIEW REQUIRED') {
+    return 'No PDF review required.';
+  }
+
+  if (failed === 0 || decision === 'READY TO DELIVER') {
+    return 'Ready to deliver.';
+  }
+
+  return `Review ${failed} failed PDF file(s) before delivery.`;
+}
+
 function createReportResponse(report) {
   return {
     generatedAt: report.generatedAt,
@@ -45,6 +62,7 @@ function createReportResponse(report) {
     nonPdfFiles: report.nonPdfFiles,
     status: report.status,
     readinessScore: report.readinessScore,
+    actionSummary: createActionSummary(report),
     pdfHealth: report.pdfHealth,
     failedPdfFiles: Array.isArray(report.failedPdfFiles) ? report.failedPdfFiles : [],
     deliveryDecision: report.deliveryDecision,
