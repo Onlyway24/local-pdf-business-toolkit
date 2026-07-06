@@ -63,6 +63,39 @@ function createStatusBadgeClass(status) {
   return 'status-badge status-empty';
 }
 
+function createManualReviewChecklistHtml(pdfFiles) {
+  const readablePdfFiles = pdfFiles.filter((file) => file.pdfText?.success);
+  const failedPdfFiles = pdfFiles.filter((file) => !file.pdfText?.success);
+
+  if (failedPdfFiles.length === 0 && readablePdfFiles.length === 0) {
+    return '<p>No PDF files were found for review.</p>';
+  }
+
+  const failedItems = failedPdfFiles.length === 0
+    ? '<li>None. All attempted PDFs were readable.</li>'
+    : failedPdfFiles.map((file) => {
+        const error = file.pdfText?.error ? ` — ${escapeHtml(file.pdfText.error)}` : '';
+        return `<li>${escapeHtml(file.relativePath)}${error}</li>`;
+      }).join('');
+
+  const readableItems = readablePdfFiles.length === 0
+    ? '<li>None.</li>'
+    : readablePdfFiles.map((file) => `<li>${escapeHtml(file.relativePath)}</li>`).join('');
+
+  const nextStep = failedPdfFiles.length === 0
+    ? 'Proceed with the client pack or review the extracted text before delivery.'
+    : 'Review or replace failed PDFs before sending client deliverables.';
+
+  return `
+    <h3>Needs manual review</h3>
+    <ul>${failedItems}</ul>
+    <h3>Readable PDFs</h3>
+    <ul>${readableItems}</ul>
+    <h3>Next step</h3>
+    <p>${escapeHtml(nextStep)}</p>
+  `;
+}
+
 function createPdfTextInspectionHtmlReport(result) {
   const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
 
@@ -149,6 +182,13 @@ function createPdfTextInspectionHtmlReport(result) {
       background: #e5e7eb;
       color: #374151;
     }
+    .checklist-section ul {
+      margin: 8px 0 18px;
+      padding-left: 22px;
+    }
+    .checklist-section li {
+      margin-bottom: 6px;
+    }
     pre {
       white-space: pre-wrap;
       background: #111827;
@@ -183,6 +223,11 @@ function createPdfTextInspectionHtmlReport(result) {
       <h2>PDF Health</h2>
       <p><strong>Readable PDFs:</strong> ${escapeHtml(result.pdfTextExtraction?.succeeded || 0)} / ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
       <p><strong>Failed PDFs:</strong> ${escapeHtml(result.pdfTextExtraction?.failed || 0)} / ${escapeHtml(result.pdfTextExtraction?.attempted || 0)}</p>
+    </section>
+
+    <section class="summary checklist-section">
+      <h2>Manual Review Checklist</h2>
+      ${createManualReviewChecklistHtml(pdfFiles)}
     </section>
 
     <section class="summary">

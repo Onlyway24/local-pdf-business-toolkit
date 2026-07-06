@@ -39,6 +39,10 @@ function run() {
   assert.ok(html.includes('PDF Health'));
   assert.ok(html.includes('Readable PDFs:</strong> 1 / 1'));
   assert.ok(html.includes('Failed PDFs:</strong> 0 / 1'));
+  assert.ok(html.includes('Manual Review Checklist'));
+  assert.ok(html.includes('Needs manual review'));
+  assert.ok(html.includes('None. All attempted PDFs were readable.'));
+  assert.ok(html.includes('Readable PDFs'));
   assert.ok(html.includes('This folder is ready for review'));
   assert.ok(html.includes('/demo/folder'));
   assert.ok(html.includes('contract.pdf'));
@@ -79,6 +83,8 @@ function run() {
   assert.ok(failedHtml.includes('Readable PDFs:</strong> 0 / 2'));
   assert.ok(failedHtml.includes('Failed PDFs:</strong> 2 / 2'));
   assert.ok(failedHtml.includes('Replace invalid PDFs with real readable PDF files'));
+  assert.ok(failedHtml.includes('Manual Review Checklist'));
+  assert.ok(failedHtml.includes('Readable PDFs'));
 
   const partialHtml = createPdfTextInspectionHtmlReport({
     folderPath: '/partial/folder',

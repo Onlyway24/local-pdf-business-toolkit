@@ -23,6 +23,54 @@ function createPdfTextInspectionReport(result) {
   lines.push(`Failed PDFs: ${failed} / ${attempted}`);
   lines.push('');
 
+  const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
+  const readablePdfFiles = pdfFiles.filter((file) => file.pdfText?.success);
+  const failedPdfFiles = pdfFiles.filter((file) => !file.pdfText?.success);
+
+  lines.push('## Manual Review Checklist');
+  lines.push('');
+
+  if (failedPdfFiles.length === 0 && readablePdfFiles.length === 0) {
+    lines.push('No PDF files were found for review.');
+    lines.push('');
+  } else {
+    lines.push('### Needs manual review');
+    lines.push('');
+
+    if (failedPdfFiles.length === 0) {
+      lines.push('- None. All attempted PDFs were readable.');
+    } else {
+      failedPdfFiles.forEach((file) => {
+        const error = file.pdfText?.error ? ` — ${file.pdfText.error}` : '';
+        lines.push(`- ${file.relativePath}${error}`);
+      });
+    }
+
+    lines.push('');
+    lines.push('### Readable PDFs');
+    lines.push('');
+
+    if (readablePdfFiles.length === 0) {
+      lines.push('- None.');
+    } else {
+      readablePdfFiles.forEach((file) => {
+        lines.push(`- ${file.relativePath}`);
+      });
+    }
+
+    lines.push('');
+    lines.push('### Next step');
+    lines.push('');
+
+    if (failedPdfFiles.length === 0) {
+      lines.push('Proceed with the client pack or review the extracted text before delivery.');
+    } else {
+      lines.push('Review or replace failed PDFs before sending client deliverables.');
+    }
+
+    lines.push('');
+  }
+
   lines.push('## PDF Text Extraction');
   lines.push('');
   lines.push(`Attempted: ${attempted}`);
@@ -33,9 +81,9 @@ function createPdfTextInspectionReport(result) {
   lines.push('## PDF Files');
   lines.push('');
 
-  const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
+  const pdfFilesForDetails = result.files.filter((file) => file.extension === '.pdf');
 
-  if (pdfFiles.length === 0) {
+  if (pdfFilesForDetails.length === 0) {
     lines.push('No PDF files found.');
     lines.push('');
   }

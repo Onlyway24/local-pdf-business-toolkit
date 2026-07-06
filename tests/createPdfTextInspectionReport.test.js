@@ -42,6 +42,12 @@ function run() {
   assert.ok(report.includes('## PDF Health'));
   assert.ok(report.includes('Readable PDFs: 1 / 1'));
   assert.ok(report.includes('Failed PDFs: 0 / 1'));
+  assert.ok(report.includes('## Manual Review Checklist'));
+  assert.ok(report.includes('### Needs manual review'));
+  assert.ok(report.includes('- None. All attempted PDFs were readable.'));
+  assert.ok(report.includes('### Readable PDFs'));
+  assert.ok(report.includes('- contract.pdf'));
+  assert.ok(report.includes('### Next step'));
   assert.ok(report.includes('Attempted: 1'));
   assert.ok(report.includes('Succeeded: 1'));
   assert.ok(report.includes('### contract.pdf'));
