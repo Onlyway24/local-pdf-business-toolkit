@@ -648,3 +648,32 @@ button:disabled {
   border-color: rgba(239, 68, 68, 0.55);
   color: #fecaca;
 }
+
+
+.failed-pdf-queue {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(127, 29, 29, 0.18);
+}
+
+.failed-pdf-queue h4 {
+  margin: 0 0 10px;
+  color: #fecaca;
+}
+
+.failed-pdf-queue ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.failed-pdf-queue li {
+  margin-bottom: 8px;
+}
+
+.failed-pdf-queue span {
+  display: block;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}

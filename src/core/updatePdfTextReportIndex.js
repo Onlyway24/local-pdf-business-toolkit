@@ -85,6 +85,21 @@ function createIndexEntry(result, reportPaths) {
   };
 }
 
+
+function getFailedPdfFiles(result) {
+  if (!Array.isArray(result.files)) {
+    return [];
+  }
+
+  return result.files
+    .filter((file) => file.extension === '.pdf' && file.pdfText && file.pdfText.success === false)
+    .map((file) => ({
+      name: file.name,
+      relativePath: file.relativePath,
+      error: file.pdfText.error || 'Unknown PDF extraction error.'
+    }));
+}
+
 function updatePdfTextReportIndex({ result, reportPaths, indexPath }) {
   const resolvedIndexPath = indexPath || path.resolve('outputs', 'reports', 'index.json');
   const index = readExistingIndex(resolvedIndexPath);

@@ -46,6 +46,7 @@ function createReportResponse(report) {
     status: report.status,
     readinessScore: report.readinessScore,
     pdfHealth: report.pdfHealth,
+    failedPdfFiles: Array.isArray(report.failedPdfFiles) ? report.failedPdfFiles : [],
     deliveryDecision: report.deliveryDecision,
     links: {
       html: toPublicReportPath(report.reportPaths?.htmlReportPath),
