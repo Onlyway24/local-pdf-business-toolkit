@@ -53,6 +53,11 @@ function printSuccess(title, result) {
     console.log("HTML report:");
     console.log(result.htmlReportPath);
   }
+
+  if (result.jsonReportPath) {
+    console.log("JSON report:");
+    console.log(result.jsonReportPath);
+  }
 }
 
 async function main() {
