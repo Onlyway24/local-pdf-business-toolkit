@@ -30,6 +30,7 @@ async function run() {
         nonPdfFiles: 1,
         status: 'PARTIAL',
         readinessScore: 60,
+        actionSummary: 'Review 2 failed PDF file(s) before delivery.',
         pdfHealth: {
           attempted: 3,
           succeeded: 1,
