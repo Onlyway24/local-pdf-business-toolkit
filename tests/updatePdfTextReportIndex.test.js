@@ -20,6 +20,41 @@ function run() {
       succeeded: 1,
       failed: 2
     },
+    files: [
+      {
+        name: 'readable-contract.pdf',
+        relativePath: 'readable-contract.pdf',
+        extension: '.pdf',
+        pdfText: {
+          success: true,
+          error: null
+        }
+      },
+      {
+        name: 'broken-contract.pdf',
+        relativePath: 'broken-contract.pdf',
+        extension: '.pdf',
+        pdfText: {
+          success: false,
+          error: 'Invalid PDF structure.'
+        }
+      },
+      {
+        name: 'broken-invoice.pdf',
+        relativePath: 'nested/broken-invoice.pdf',
+        extension: '.pdf',
+        pdfText: {
+          success: false,
+          error: 'Encrypted PDF.'
+        }
+      },
+      {
+        name: 'notes.txt',
+        relativePath: 'notes.txt',
+        extension: '.txt',
+        pdfText: null
+      }
+    ],
     deliveryDecision: {
       decision: 'REVIEW BEFORE DELIVERY'
     }
@@ -49,6 +84,18 @@ function run() {
   assert.strictEqual(firstIndex.reports[0].pdfHealth.attempted, 3);
   assert.strictEqual(firstIndex.reports[0].pdfHealth.succeeded, 1);
   assert.strictEqual(firstIndex.reports[0].pdfHealth.failed, 2);
+  assert.deepStrictEqual(firstIndex.reports[0].failedPdfFiles, [
+    {
+      name: 'broken-contract.pdf',
+      relativePath: 'broken-contract.pdf',
+      error: 'Invalid PDF structure.'
+    },
+    {
+      name: 'broken-invoice.pdf',
+      relativePath: 'nested/broken-invoice.pdf',
+      error: 'Encrypted PDF.'
+    }
+  ]);
   assert.strictEqual(firstIndex.reports[0].deliveryDecision.decision, 'REVIEW BEFORE DELIVERY');
   assert.strictEqual(firstIndex.reports[0].deliveryDecision.reason, '2 of 3 PDF file(s) need manual review before delivery.');
   assert.strictEqual(firstIndex.reports[0].deliveryDecision.requiredAction, 'Review or replace failed PDFs, then regenerate the report before delivery.');
@@ -81,6 +128,7 @@ function run() {
   assert.strictEqual(secondIndex.reports[1].status, 'READY');
   assert.strictEqual(secondIndex.reports[1].deliveryDecision.decision, 'READY TO DELIVER');
   assert.strictEqual(secondIndex.reports[1].deliveryDecision.reason, 'All attempted PDF files were readable.');
+  assert.deepStrictEqual(secondIndex.reports[1].failedPdfFiles, []);
 
   console.log('updatePdfTextReportIndex.test.js passed');
 }
