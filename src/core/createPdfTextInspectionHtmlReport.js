@@ -47,6 +47,22 @@ function createRecommendedAction(result) {
   return 'Review the failed PDFs manually and continue with the readable documents.';
 }
 
+function createStatusBadgeClass(status) {
+  if (status === 'READY') {
+    return 'status-badge status-ready';
+  }
+
+  if (status === 'PARTIAL') {
+    return 'status-badge status-partial';
+  }
+
+  if (status === 'NEEDS REVIEW') {
+    return 'status-badge status-needs-review';
+  }
+
+  return 'status-badge status-empty';
+}
+
 function createPdfTextInspectionHtmlReport(result) {
   const pdfFiles = result.files.filter((file) => file.extension === '.pdf');
 
@@ -109,6 +125,30 @@ function createPdfTextInspectionHtmlReport(result) {
       color: #b91c1c;
       font-weight: bold;
     }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .status-ready {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .status-partial {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status-needs-review {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .status-empty {
+      background: #e5e7eb;
+      color: #374151;
+    }
     pre {
       white-space: pre-wrap;
       background: #111827;
@@ -135,7 +175,7 @@ function createPdfTextInspectionHtmlReport(result) {
       <p><strong>Total files:</strong> ${escapeHtml(result.totalFiles)}</p>
       <p><strong>PDF files:</strong> ${escapeHtml(result.pdfFiles)}</p>
       <p><strong>Non-PDF files:</strong> ${escapeHtml(result.nonPdfFiles)}</p>
-      <p><strong>Status:</strong> ${escapeHtml(result.status)}</p>
+      <p><strong>Status:</strong> <span class="${createStatusBadgeClass(result.status)}">${escapeHtml(result.status)}</span></p>
       <p><strong>Readiness score:</strong> ${escapeHtml(result.readinessScore)}%</p>
     </section>
 
