@@ -172,18 +172,22 @@ function filterReports(reports) {
   return reports;
 }
 
-function updateDashboardStats(reports) {
-  const total = reports.length;
-  const readinessScores = reports
+function updateDashboardStats(reports, stats = null) {
+  const fallbackTotal = reports.length;
+  const fallbackReady = reports.filter(isReadyReport).length;
+  const fallbackReview = reports.filter(isReviewReport).length;
+  const fallbackScores = reports
     .map((report) => report.readinessScore)
     .filter((score) => typeof score === 'number');
 
-  const averageReadiness = readinessScores.length === 0
+  const fallbackAverage = fallbackScores.length === 0
     ? 0
-    : Math.round(readinessScores.reduce((sum, score) => sum + score, 0) / readinessScores.length);
+    : Math.round(fallbackScores.reduce((sum, score) => sum + score, 0) / fallbackScores.length);
 
-  const readyReports = reports.filter(isReadyReport).length;
-  const reviewReports = reports.filter(isReviewReport).length;
+  const total = stats?.totalReports ?? fallbackTotal;
+  const averageReadiness = stats?.averageReadiness ?? fallbackAverage;
+  const readyReports = stats?.readyReports ?? fallbackReady;
+  const reviewReports = stats?.reviewReports ?? fallbackReview;
 
   const totalElement = document.getElementById('stat-total-reports');
   const averageElement = document.getElementById('stat-average-readiness');
@@ -214,7 +218,7 @@ function setActiveReportFilter(filter) {
   return `<a href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
 }
 
-function renderRecentReports(reports) {
+function renderRecentReports(reports, stats = null) {
   const container = document.getElementById('recent-reports');
 
   if (!container) {
@@ -222,7 +226,7 @@ function renderRecentReports(reports) {
   }
 
   recentReportsCache = Array.isArray(reports) ? reports : [];
-  updateDashboardStats(recentReportsCache);
+  updateDashboardStats(recentReportsCache, stats);
 
   const visibleReports = filterReports(recentReportsCache);
 
@@ -238,6 +242,7 @@ function renderRecentReports(reports) {
 
   container.innerHTML = visibleReports.map((report) => {
     const status = report.status || 'UNKNOWN';
+    const displayFolder = report.folderName || report.folderPath || 'Unknown folder';
     const decision = getReportDecision(report);
     const reason = report.deliveryDecision?.reason || 'No reason available.';
     const requiredAction = report.deliveryDecision?.requiredAction || '';
@@ -264,7 +269,7 @@ function renderRecentReports(reports) {
           <span class="report-date">${formatDate(report.generatedAt)}</span>
         </div>
 
-        <h3>${report.folderPath || 'Unknown folder'}</h3>
+        <h3>${displayFolder}</h3>
 
         <div class="report-metrics">
           <span>Readiness <strong>${readinessScore}</strong></span>
@@ -297,7 +302,7 @@ async function loadRecentReports() {
   try {
     const response = await fetch('/api/reports');
     const data = await response.json();
-    renderRecentReports(data.reports || []);
+    renderRecentReports(data.reports || [], data.stats || null);
   } catch (error) {
     if (container) {
       container.innerHTML = '<p class="muted">Unable to load recent reports.</p>';
@@ -354,7 +359,7 @@ function renderLatestReport(report) {
         <span>${formatDate(report.generatedAt)}</span>
       </div>
 
-      <h3>${report.folderPath || 'Unknown folder'}</h3>
+      <h3>${report.folderName || report.folderPath || 'Unknown folder'}</h3>
 
       <div class="latest-report-grid">
         <div>
