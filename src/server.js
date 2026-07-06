@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/reports', express.static(path.join(__dirname, '../outputs/reports')));
 
 app.get('/api/commands', (req, res) => {
   res.json({ commands: getCommands() });
