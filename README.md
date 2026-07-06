@@ -18,6 +18,30 @@ The toolkit can:
 - create ZIP archives
 - run a full demo flow in one command
 
+## Quick Demo
+
+Install dependencies:
+
+    npm install
+
+Generate a sample PDF inspection report:
+
+    npm run demo:pdf-report
+
+Start the local Web UI:
+
+    npm run ui
+
+Then open:
+
+    http://localhost:3000
+
+Generated reports and client packs are saved locally under:
+
+    outputs/
+
+Source documents are not uploaded to any cloud service.
+
 ## Why This Exists
 
 Many people and small businesses have messy document folders.
