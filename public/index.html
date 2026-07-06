@@ -40,6 +40,7 @@
             <select id="command-select">
               <option value="full-demo">Demo Completa (Full Demo)</option>
               <option value="inspect">Ispeziona Cartella (Inspect)</option>
+              <option value="inspect-pdf-text">Ispeziona Testo PDF (PDF Text)</option>
               <option value="plan">Genera Piano (Plan)</option>
               <option value="client-pack">Crea Pacchetto (Client Pack)</option>
             </select>
@@ -84,8 +85,16 @@
               <span class="detail-value" id="res-zip">...</span>
             </div>
             <div class="detail-item hidden" id="item-report">
-              <span class="detail-label">Report Generato</span>
+              <span class="detail-label">Report Markdown</span>
               <span class="detail-value" id="res-report">...</span>
+            </div>
+            <div class="detail-item hidden" id="item-html-report">
+              <span class="detail-label">Report HTML</span>
+              <a class="detail-link" id="res-html-report" href="#" target="_blank" rel="noopener noreferrer">Apri report HTML</a>
+            </div>
+            <div class="detail-item hidden" id="item-pdf-extraction">
+              <span class="detail-label">PDF Text Extraction</span>
+              <span class="detail-value" id="res-pdf-extraction">...</span>
             </div>
           </div>
         </div>

@@ -1,3 +1,20 @@
+function toReportUrl(filePath) {
+  if (!filePath) {
+    return null;
+  }
+
+  const normalized = filePath.replaceAll('\\', '/');
+  const marker = '/outputs/reports/';
+  const markerIndex = normalized.indexOf(marker);
+
+  if (markerIndex === -1) {
+    return null;
+  }
+
+  const fileName = normalized.slice(markerIndex + marker.length);
+  return `/reports/${encodeURIComponent(fileName)}`;
+}
+
 document.getElementById('runner-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -13,7 +30,6 @@ document.getElementById('runner-form').addEventListener('submit', async (e) => {
   const resultCard = document.querySelector('.result-card');
   const errorCard = document.getElementById('error-card');
   
-  // Reset UI
   submitBtn.disabled = true;
   btnText.classList.add('hidden');
   loader.classList.remove('hidden');
@@ -21,8 +37,7 @@ document.getElementById('runner-form').addEventListener('submit', async (e) => {
   resultCard.classList.add('hidden');
   errorCard.classList.add('hidden');
   
-  // Hide all details initially
-  ['folder', 'pack', 'zip', 'report'].forEach(id => {
+  ['folder', 'pack', 'zip', 'report', 'html-report', 'pdf-extraction'].forEach(id => {
     document.getElementById(`item-${id}`).classList.add('hidden');
   });
 
@@ -49,7 +64,7 @@ document.getElementById('runner-form').addEventListener('submit', async (e) => {
       document.getElementById('result-title').textContent = data.title;
       
       const res = data.result;
-      document.getElementById('res-files').textContent = res.totalFiles;
+      document.getElementById('res-files').textContent = res.totalFiles ?? 'N/A';
       
       const scoreEl = document.getElementById('res-score');
       scoreEl.textContent = res.readinessScore !== undefined ? `${res.readinessScore}%` : 'N/A';
@@ -81,6 +96,22 @@ document.getElementById('runner-form').addEventListener('submit', async (e) => {
       if (res.savedPath) {
         document.getElementById('item-report').classList.remove('hidden');
         document.getElementById('res-report').textContent = res.savedPath;
+      }
+
+      if (res.htmlReportPath) {
+        const reportUrl = toReportUrl(res.htmlReportPath);
+        const htmlLink = document.getElementById('res-html-report');
+
+        document.getElementById('item-html-report').classList.remove('hidden');
+        htmlLink.textContent = reportUrl ? 'Apri report HTML nel browser' : res.htmlReportPath;
+        htmlLink.href = reportUrl || '#';
+      }
+
+      if (res.pdfTextExtraction) {
+        const extraction = res.pdfTextExtraction;
+        document.getElementById('item-pdf-extraction').classList.remove('hidden');
+        document.getElementById('res-pdf-extraction').textContent =
+          `Attempted: ${extraction.attempted}, Succeeded: ${extraction.succeeded}, Failed: ${extraction.failed}`;
       }
       
     } else {
