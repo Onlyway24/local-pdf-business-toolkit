@@ -401,6 +401,32 @@ function renderLatestReport(report) {
   `;
 }
 
+
+
+function renderFailedPdfFiles(report) {
+  const failedPdfFiles = Array.isArray(report.failedPdfFiles) ? report.failedPdfFiles : [];
+
+  if (failedPdfFiles.length === 0) {
+    return '';
+  }
+
+  const items = failedPdfFiles
+    .map((file) => `
+      <li>
+        <strong>${file.name || file.relativePath || 'Unknown PDF'}</strong>
+        <span>${file.error || 'Unknown PDF extraction error.'}</span>
+      </li>
+    `)
+    .join('');
+
+  return `
+    <div class="failed-pdf-queue">
+      <h4>PDFs needing manual review</h4>
+      <ul>${items}</ul>
+    </div>
+  `;
+}
+
 async function loadLatestReport() {
   const container = document.getElementById('latest-report');
 

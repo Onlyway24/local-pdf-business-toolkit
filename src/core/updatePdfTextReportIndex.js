@@ -62,6 +62,20 @@ function createClientDeliveryDecision(result) {
   };
 }
 
+function getFailedPdfFiles(result) {
+  if (!Array.isArray(result.files)) {
+    return [];
+  }
+
+  return result.files
+    .filter((file) => file.extension === '.pdf' && file.pdfText && file.pdfText.success === false)
+    .map((file) => ({
+      name: file.name,
+      relativePath: file.relativePath,
+      error: file.pdfText.error || 'Unknown PDF extraction error.'
+    }));
+}
+
 function createIndexEntry(result, reportPaths) {
   return {
     generatedAt: new Date().toISOString(),
@@ -76,6 +90,7 @@ function createIndexEntry(result, reportPaths) {
       succeeded: result.pdfTextExtraction?.succeeded || 0,
       failed: result.pdfTextExtraction?.failed || 0
     },
+    failedPdfFiles: getFailedPdfFiles(result),
     deliveryDecision: createClientDeliveryDecision(result),
     reportPaths: {
       markdownReportPath: reportPaths.markdownPath,
@@ -84,6 +99,8 @@ function createIndexEntry(result, reportPaths) {
     }
   };
 }
+
+
 
 function updatePdfTextReportIndex({ result, reportPaths, indexPath }) {
   const resolvedIndexPath = indexPath || path.resolve('outputs', 'reports', 'index.json');
