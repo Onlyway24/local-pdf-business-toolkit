@@ -20,7 +20,7 @@ async function run() {
   const execution = await runCommand("inspect", "samples");
 
   assert.strictEqual(execution.title, "INSPECTION COMPLETE");
-  assert.strictEqual(execution.result.totalFiles, 3);
+  assert.strictEqual(execution.result.totalFiles, 4);
 
   console.log("commandRouter.test.js passed");
 }

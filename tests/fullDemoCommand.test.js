@@ -5,7 +5,7 @@ const { runFullDemoCommand } = require("../src/commands/fullDemoCommand");
 function run() {
   const result = runFullDemoCommand("samples", "Mario Rossi");
 
-  assert.strictEqual(result.totalFiles, 3);
+  assert.strictEqual(result.totalFiles, 4);
   assert.strictEqual(result.status, "READY");
   assert.ok(fs.existsSync(result.clientPackRoot));
   assert.ok(fs.existsSync(result.zipPath));

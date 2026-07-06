@@ -39,7 +39,7 @@ function run() {
     clientName: "Mario Rossi",
   });
 
-  assert.strictEqual(result.totalCopied, 3);
+  assert.strictEqual(result.totalCopied, 4);
   assert.ok(fs.existsSync(result.clientPackRoot));
   assert.ok(result.clientPackRoot.includes(path.join("outputs", "client-packs", "mario-rossi-")));
 
