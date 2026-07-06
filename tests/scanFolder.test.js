@@ -7,8 +7,8 @@ function run() {
   const sampleResult = scanFolder(samplePath);
 
   assert.strictEqual(sampleResult.folderPath, samplePath);
-  assert.strictEqual(sampleResult.totalFiles, 3);
-  assert.strictEqual(sampleResult.files.length, 3);
+  assert.strictEqual(sampleResult.totalFiles, 4);
+  assert.strictEqual(sampleResult.files.length, 4);
 
   const nestedPath = path.resolve("tests/fixtures/nested-client-folder");
   const nestedResult = scanFolder(nestedPath);

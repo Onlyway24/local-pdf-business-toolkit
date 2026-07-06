@@ -11,7 +11,7 @@ function run() {
   const plan = createOrganizationPlan(scanResult);
   const result = createPreviewPack(samplePath, plan);
 
-  assert.strictEqual(result.totalCopied, 3);
+  assert.strictEqual(result.totalCopied, 4);
   assert.ok(fs.existsSync(result.previewRoot));
 
   assert.ok(

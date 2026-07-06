@@ -9,8 +9,8 @@ function run() {
   const plan = createOrganizationPlan(scanResult);
 
   assert.strictEqual(plan.folderPath, samplePath);
-  assert.strictEqual(plan.totalFiles, 3);
-  assert.strictEqual(plan.plannedFiles.length, 3);
+  assert.strictEqual(plan.totalFiles, 4);
+  assert.strictEqual(plan.plannedFiles.length, 4);
 
   const contract = plan.plannedFiles.find(
     (file) => file.originalName === "cliente-contratto.pdf"

@@ -12,14 +12,14 @@ async function run() {
   const execution = await runCommand('inspect-pdf-text', path.resolve('samples'));
 
   assert.strictEqual(execution.title, 'PDF TEXT INSPECTION COMPLETE');
-  assert.strictEqual(execution.result.totalFiles, 3);
-  assert.strictEqual(execution.result.status, 'NEEDS REVIEW');
-  assert.strictEqual(execution.result.readinessScore, 0);
+  assert.strictEqual(execution.result.totalFiles, 4);
+  assert.strictEqual(execution.result.status, 'PARTIAL');
+  assert.strictEqual(execution.result.readinessScore, 60);
   assert.ok(execution.result.pdfTextExtraction);
-  assert.strictEqual(execution.result.pdfTextExtraction.attempted, 2);
+  assert.strictEqual(execution.result.pdfTextExtraction.attempted, 3);
   assert.strictEqual(
     execution.result.pdfTextExtraction.succeeded + execution.result.pdfTextExtraction.failed,
-    2
+    3
   );
 
   assert.ok(execution.result.savedPath);
@@ -33,19 +33,19 @@ async function run() {
   const htmlReport = fs.readFileSync(execution.result.htmlReportPath, 'utf8');
 
   assert.ok(markdownReport.includes('# PDF Text Inspection Report'));
-  assert.ok(markdownReport.includes('Status: NEEDS REVIEW'));
-  assert.ok(markdownReport.includes('Readiness score: 0%'));
+  assert.ok(markdownReport.includes('Status: PARTIAL'));
+  assert.ok(markdownReport.includes('Readiness score: 60%'));
   assert.ok(markdownReport.includes('## PDF Text Extraction'));
   assert.ok(markdownReport.includes('## PDF Files'));
 
   assert.ok(htmlReport.includes('<!doctype html>'));
   assert.ok(htmlReport.includes('PDF Text Inspection Report'));
-  assert.ok(htmlReport.includes('Status:</strong> NEEDS REVIEW'));
-  assert.ok(htmlReport.includes('Readiness score:</strong> 0%'));
+  assert.ok(htmlReport.includes('Status:</strong> PARTIAL'));
+  assert.ok(htmlReport.includes('Readiness score:</strong> 60%'));
   assert.ok(htmlReport.includes('PDF Text Extraction'));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');
-  assert.strictEqual(pdfFiles.length, 2);
+  assert.strictEqual(pdfFiles.length, 3);
 
   for (const file of pdfFiles) {
     assert.ok(file.pdfText);

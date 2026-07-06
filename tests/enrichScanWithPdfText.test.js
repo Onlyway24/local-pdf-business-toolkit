@@ -13,16 +13,16 @@ async function run() {
   assert.strictEqual(enriched.files.length, scanResult.files.length);
 
   assert.ok(enriched.pdfTextExtraction);
-  assert.strictEqual(enriched.pdfTextExtraction.attempted, 2);
+  assert.strictEqual(enriched.pdfTextExtraction.attempted, 3);
   assert.strictEqual(
     enriched.pdfTextExtraction.succeeded + enriched.pdfTextExtraction.failed,
-    2
+    3
   );
 
   const pdfFiles = enriched.files.filter((file) => file.extension === '.pdf');
   const nonPdfFiles = enriched.files.filter((file) => file.extension !== '.pdf');
 
-  assert.strictEqual(pdfFiles.length, 2);
+  assert.strictEqual(pdfFiles.length, 3);
   assert.strictEqual(nonPdfFiles.length, 1);
 
   for (const file of pdfFiles) {

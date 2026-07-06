@@ -9,10 +9,10 @@ function run() {
   const inspection = inspectFolder(scanResult);
 
   assert.strictEqual(inspection.folderPath, samplePath);
-  assert.strictEqual(inspection.totalFiles, 3);
-  assert.strictEqual(inspection.pdfFiles, 2);
+  assert.strictEqual(inspection.totalFiles, 4);
+  assert.strictEqual(inspection.pdfFiles, 3);
   assert.strictEqual(inspection.nonPdfFiles, 1);
-  assert.strictEqual(inspection.knownDocuments, 3);
+  assert.strictEqual(inspection.knownDocuments, 4);
   assert.strictEqual(inspection.needsReview, 0);
   assert.strictEqual(inspection.readinessScore, 100);
   assert.strictEqual(inspection.status, "READY");
