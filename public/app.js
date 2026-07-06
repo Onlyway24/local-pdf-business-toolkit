@@ -331,6 +331,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (clearHistoryButton) {
     clearHistoryButton.addEventListener('click', clearReportHistory);
   }
+
+  const runPdfInspectionButton = document.getElementById('run-pdf-inspection');
+
+  if (runPdfInspectionButton) {
+    runPdfInspectionButton.addEventListener('click', runPdfInspectionFromDashboard);
+  }
 });
 
 
@@ -440,5 +446,60 @@ async function clearReportHistory() {
     window.alert(`Report history cleared. Backup created: ${result.backupPath || 'no previous history'}`);
   } catch (error) {
     window.alert('Unable to clear report history.');
+  }
+}
+
+
+function getFolderPathInputValue() {
+  const folderInput = document.getElementById('folder-path');
+
+  if (!folderInput) {
+    return 'samples';
+  }
+
+  const value = folderInput.value.trim();
+  return value || 'samples';
+}
+
+function setPdfInspectionStatus(message, type = 'default') {
+  const container = document.getElementById('pdf-inspection-status');
+
+  if (!container) {
+    return;
+  }
+
+  container.className = `pdf-inspection-status ${type}`;
+  container.textContent = message;
+}
+
+async function runPdfInspectionFromDashboard() {
+  const folderPath = getFolderPathInputValue();
+
+  setPdfInspectionStatus(`Running PDF inspection for: ${folderPath}`, 'loading');
+
+  try {
+    const response = await fetch('/api/run', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        command: 'inspect-pdf-text',
+        folderPath
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'PDF inspection failed.');
+    }
+
+    setPdfInspectionStatus('PDF inspection complete. Dashboard refreshed.', 'success');
+
+    await loadLatestReport();
+    await loadRecentReports();
+  } catch (error) {
+    setPdfInspectionStatus(`PDF inspection failed: ${error.message}`, 'error');
   }
 }
