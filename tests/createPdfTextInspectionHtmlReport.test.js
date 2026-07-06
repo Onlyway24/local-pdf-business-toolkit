@@ -32,6 +32,9 @@ function run() {
 
   assert.ok(html.includes('<!doctype html>'));
   assert.ok(html.includes('PDF Text Inspection Report'));
+  assert.ok(html.includes('Executive Summary'));
+  assert.ok(html.includes('Recommended action'));
+  assert.ok(html.includes('This folder is ready for review'));
   assert.ok(html.includes('/demo/folder'));
   assert.ok(html.includes('contract.pdf'));
   assert.ok(html.includes('Real PDF extraction fixture'));
@@ -50,6 +53,24 @@ function run() {
 
   assert.ok(!escaped.includes('<script>alert(1)</script>'));
   assert.ok(escaped.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+
+  const failedHtml = createPdfTextInspectionHtmlReport({
+    folderPath: '/failed/folder',
+    totalFiles: 2,
+    pdfFiles: 2,
+    nonPdfFiles: 0,
+    status: 'READY',
+    readinessScore: 100,
+    pdfTextExtraction: {
+      attempted: 2,
+      succeeded: 0,
+      failed: 2
+    },
+    files: []
+  });
+
+  assert.ok(failedHtml.includes('This folder needs review'));
+  assert.ok(failedHtml.includes('Replace invalid PDFs with real readable PDF files'));
 
   console.log('createPdfTextInspectionHtmlReport.test.js passed');
 }
