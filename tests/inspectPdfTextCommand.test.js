@@ -13,6 +13,8 @@ async function run() {
 
   assert.strictEqual(execution.title, 'PDF TEXT INSPECTION COMPLETE');
   assert.strictEqual(execution.result.totalFiles, 3);
+  assert.strictEqual(execution.result.status, 'NEEDS REVIEW');
+  assert.strictEqual(execution.result.readinessScore, 0);
   assert.ok(execution.result.pdfTextExtraction);
   assert.strictEqual(execution.result.pdfTextExtraction.attempted, 2);
   assert.strictEqual(
@@ -31,11 +33,15 @@ async function run() {
   const htmlReport = fs.readFileSync(execution.result.htmlReportPath, 'utf8');
 
   assert.ok(markdownReport.includes('# PDF Text Inspection Report'));
+  assert.ok(markdownReport.includes('Status: NEEDS REVIEW'));
+  assert.ok(markdownReport.includes('Readiness score: 0%'));
   assert.ok(markdownReport.includes('## PDF Text Extraction'));
   assert.ok(markdownReport.includes('## PDF Files'));
 
   assert.ok(htmlReport.includes('<!doctype html>'));
   assert.ok(htmlReport.includes('PDF Text Inspection Report'));
+  assert.ok(htmlReport.includes('Status:</strong> NEEDS REVIEW'));
+  assert.ok(htmlReport.includes('Readiness score:</strong> 0%'));
   assert.ok(htmlReport.includes('PDF Text Extraction'));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');

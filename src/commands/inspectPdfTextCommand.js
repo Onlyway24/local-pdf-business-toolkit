@@ -18,10 +18,31 @@ function createReportPaths() {
   };
 }
 
+function applyPdfTextReadiness(inspection, pdfTextExtraction) {
+  if (!pdfTextExtraction || pdfTextExtraction.attempted === 0 || pdfTextExtraction.failed === 0) {
+    return inspection;
+  }
+
+  if (pdfTextExtraction.succeeded === 0) {
+    return {
+      ...inspection,
+      status: 'NEEDS REVIEW',
+      readinessScore: 0
+    };
+  }
+
+  return {
+    ...inspection,
+    status: 'PARTIAL',
+    readinessScore: Math.min(inspection.readinessScore, 60)
+  };
+}
+
 async function runInspectPdfTextCommand(folderPath) {
   const scanResult = scanFolder(folderPath);
   const enrichedScan = await enrichScanWithPdfText(scanResult);
-  const inspection = inspectFolder(enrichedScan);
+  const baseInspection = inspectFolder(enrichedScan);
+  const inspection = applyPdfTextReadiness(baseInspection, enrichedScan.pdfTextExtraction);
 
   const result = {
     ...inspection,
