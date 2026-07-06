@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const { runCommand, getCommands } = require('./commands/commandRouter');
+const { clearPdfTextReportHistory } = require('./core/clearPdfTextReportHistory');
 
 
 function toPublicReportPath(filePath) {
