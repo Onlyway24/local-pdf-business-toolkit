@@ -358,6 +358,7 @@ function renderLatestReport(report) {
   const readinessScore = typeof report.readinessScore === 'number'
     ? `${report.readinessScore}%`
     : 'N/A';
+  const actionSummary = report.actionSummary || 'Review report details before delivery.';
 
   const htmlLink = createReportLink('Open HTML Report', report.links?.html);
   const jsonLink = createReportLink('Open JSON Data', report.links?.json);
@@ -372,6 +373,11 @@ function renderLatestReport(report) {
       </div>
 
       <h3>${report.folderName || report.folderPath || 'Unknown folder'}</h3>
+
+      <div class="latest-action-summary" role="status">
+        <span>Next action</span>
+        <strong>${actionSummary}</strong>
+      </div>
 
       <div class="latest-report-grid">
         <div>
@@ -392,10 +398,6 @@ function renderLatestReport(report) {
         <strong>${decision}</strong>
         <p>${reason}</p>
         ${requiredAction ? `<small>${requiredAction}</small>` : ''}
-      </div>
-
-      <div class="latest-action-summary">
-        ${report.actionSummary || 'Review report details before delivery.'}
       </div>
 
       <div class="report-links latest-actions">
