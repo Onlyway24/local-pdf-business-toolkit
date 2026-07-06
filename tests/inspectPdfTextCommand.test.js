@@ -25,12 +25,15 @@ async function run() {
   assert.ok(execution.result.savedPath);
   assert.ok(execution.result.markdownReportPath);
   assert.ok(execution.result.htmlReportPath);
+  assert.ok(execution.result.jsonReportPath);
 
   assert.ok(fs.existsSync(execution.result.markdownReportPath));
   assert.ok(fs.existsSync(execution.result.htmlReportPath));
+  assert.ok(fs.existsSync(execution.result.jsonReportPath));
 
   const markdownReport = fs.readFileSync(execution.result.markdownReportPath, 'utf8');
   const htmlReport = fs.readFileSync(execution.result.htmlReportPath, 'utf8');
+  const jsonReport = JSON.parse(fs.readFileSync(execution.result.jsonReportPath, 'utf8'));
 
   assert.ok(markdownReport.includes('# PDF Text Inspection Report'));
   assert.ok(markdownReport.includes('Status: PARTIAL'));
@@ -43,6 +46,14 @@ async function run() {
   assert.ok(htmlReport.includes('<span class="status-badge status-partial">PARTIAL</span>'));
   assert.ok(htmlReport.includes('Readiness score:</strong> 60%'));
   assert.ok(htmlReport.includes('PDF Text Extraction'));
+
+  assert.strictEqual(jsonReport.summary.status, 'PARTIAL');
+  assert.strictEqual(jsonReport.summary.readinessScore, 60);
+  assert.strictEqual(jsonReport.pdfHealth.attempted, 3);
+  assert.strictEqual(jsonReport.pdfHealth.succeeded + jsonReport.pdfHealth.failed, 3);
+  assert.strictEqual(jsonReport.deliveryDecision.decision, 'REVIEW BEFORE DELIVERY');
+  assert.ok(Array.isArray(jsonReport.manualReview.failedPdfFiles));
+  assert.ok(Array.isArray(jsonReport.manualReview.readablePdfFiles));
 
   const pdfFiles = execution.result.files.filter((file) => file.extension === '.pdf');
   assert.strictEqual(pdfFiles.length, 3);
