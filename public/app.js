@@ -400,6 +400,8 @@ function renderLatestReport(report) {
         ${requiredAction ? `<small>${requiredAction}</small>` : ''}
       </div>
 
+      ${renderFailedPdfFiles(report)}
+
       <div class="report-links latest-actions">
         ${links || '<span class="muted">No report links available.</span>'}
       </div>
